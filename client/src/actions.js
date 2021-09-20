@@ -1,5 +1,5 @@
 export const getFoods = callBackFn => {
-    fetch('http://localhost:5000/foods')
+    fetch('https://example-node-api-rosalinep.herokuapp.com/foods')
         .then(response => response.json())
         .then(data => {
             console.log("data", data);
