@@ -93,24 +93,29 @@
 .fridge__btnGroupMiddle { border-width:  2px 0px 2px 0px; }
 .fridge__btnGroupRight  { border-radius: 0px 10px 10px 0px; }
 
-.fridge__compartmentView{
+.fridge__selectedButton {
+  background-color: #a4de02 !important;
+  color: white !important;
+}
+
+.fridge__compartmentView {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.fridge__addIcon{
+.fridge__addIcon {
   margin-top: 10px;
   margin-left: 10px;
   cursor:pointer;
 }
 
-.fridge__table{
+.fridge__table {
   margin-top: 4vh;
   width: 75vw;
 }
 
-.ftHeader{
+.ftHeader {
   margin-top: 6vh;
   border-bottom: 5px dashed #FED833;
   font-weight: bold;
@@ -118,7 +123,7 @@
   color: #577504;
 }
 
-.ftRow{
+.ftRow {
   display: flex;
   align-items: center;
   width: 75vw;
@@ -127,19 +132,19 @@
   color: #92c10f;
 }
 
-.ftCell{
+.ftCell {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
   overflow: hidden;
 }
 
-.foodIcon{
+.foodIcon {
   height: 2.5em;
   width:  2.5em;
 }
 
-.foodActionsBar{
+.foodActionsBar {
   display: flex;
   flex-direction: column;
   float: right;
@@ -149,7 +154,7 @@
   right: 1.5em;
 }
 
-.foodAction{
+.foodAction {
   height: 3.9em;
   width: 3.9em;
   border-radius: 4em;
@@ -157,6 +162,17 @@
   align-items: center;
   justify-content: center;
   margin: 1em 0 1em 0;
+}
+
+.foodActionEnabled {
+  color: #a4de02;
+  border: 3px solid #a4de02;
+  cursor: pointer;
+}
+
+.foodActionDisabled {
+  color: #C0C5CE;
+  border: 3px dotted #C0C5CE;
 }
 /* --------------------------------------- */
 /* Util/Misc */
@@ -190,8 +206,11 @@ body {
   outline: none;
 }
 
-.icon{
+.icon {
   color: #a4de02;
   padding: 0;
 }
 
+.noDisplay {
+  display: none;
+}
