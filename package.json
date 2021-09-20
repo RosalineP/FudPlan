@@ -1,8 +1,7 @@
 {
-  "name": "books-api",
+  "name": "fudplan",
   "version": "1.0.0",
   "private": true,
-  "description": "Books API",
   "main": "index.js",
   "engines": {
     "node": "11.x"

@@ -22,7 +22,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix **/*.jsx",
     "lint-fix": "eslint --fix"
   },
   "eslintConfig": {

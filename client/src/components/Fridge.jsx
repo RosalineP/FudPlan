@@ -12,28 +12,28 @@ import { getFoods } from '../actions';
 library.add(faPlus, faEdit, faSquare, faCheckSquare, faCheck, faChevronCircleRight, faChevronCircleLeft);
 
 const classNames = require('classnames');
+const images = require.context('../assets/icons', true);
 
-class FridgeButton extends Component {
-    render() {
-        const { storageCategory, selection, onClickButton } = this.props;
-        const styling =
-            storageCategory === 'freezer'
-                ? 'fridge__btnGroupLeft'
-                : storageCategory === 'fridge'
-                ? 'fridge__btnGroupMiddle'
-                : 'fridge__btnGroupRight';
+const FridgeButton = (props) => {
+    const { compartment, selection, onClickButton } = props;
 
-        return (
-            <Button
-                className={classNames('greenButton', styling, {
-                    fridge__selectedButton: selection === storageCategory,
-                })}
-                onClick={() => onClickButton(storageCategory)}
-            >
-                {storageCategory}
-            </Button>
-        );
-    }
+    const styling =
+        compartment === 'freezer'
+            ? 'fridge__btnGroupLeft'
+            : compartment === 'fridge'
+            ? 'fridge__btnGroupMiddle'
+            : 'fridge__btnGroupRight';
+
+    return (
+        <Button
+            className={classNames('greenButton', styling, {
+                fridge__selectedButton: selection === compartment,
+            })}
+            onClick={() => onClickButton(compartment)}
+        >
+            {compartment}
+        </Button>
+    );
 }
 
 class FridgeButtonGroup extends Component {
@@ -47,9 +47,9 @@ class FridgeButtonGroup extends Component {
 
         return (
             <ButtonGroup size="lg" aria-label="compartment navigation" className="fridge__buttonGroup noHighlight">
-                <FridgeButton storageCategory="freezer" selection={selection} onClickButton={onClickButton} />
-                <FridgeButton storageCategory="fridge" selection={selection} onClickButton={onClickButton} />
-                <FridgeButton storageCategory="pantry" selection={selection} onClickButton={onClickButton} />
+                <FridgeButton compartment="freezer" selection={selection} onClickButton={onClickButton} />
+                <FridgeButton compartment="fridge" selection={selection} onClickButton={onClickButton} />
+                <FridgeButton compartment="pantry" selection={selection} onClickButton={onClickButton} />
 
                 <FontAwesomeIcon
                     onClick={() => this.setState({ isPopOverOpen: !this.state.isPopOverOpen })}
@@ -72,12 +72,10 @@ class FoodActionsBar extends Component {
         return (
             <div className="foodActionsBar">
                 <div className="foodAction" style={this.props.actionStyle} onClick={() => this.deleteFood()}>
-                    {' '}
-                    eat{' '}
+                    eat
                 </div>
                 <div className="foodAction" style={this.props.actionStyle} onClick={() => this.deleteFood()}>
-                    {' '}
-                    expire{' '}
+                    expire
                 </div>
             </div>
         );
@@ -103,7 +101,7 @@ class FoodRow extends Component {
     }
 
     render() {
-        const { iconCell, nameCell, expiryCell, isCollapsed, unitCell, priceCell, quantityCell } = this.props;
+        const { iconCell, nameCell, expiryCell, isCollapsed, unitCell, quantityCell } = this.props;
 
         let checkBox;
         if (this.state.checked) {
@@ -111,8 +109,6 @@ class FoodRow extends Component {
         } else {
             checkBox = <FontAwesomeIcon className="icon" icon={['far', 'square']} size="lg" />;
         }
-
-        const images = require.context('../Icons', true);
 
         return (
             <div className="ftRow">
@@ -127,7 +123,6 @@ class FoodRow extends Component {
                 <div className="ftCell collapseButtonCell"> </div>
                 <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>{quantityCell}</div>
                 <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>{unitCell}</div>
-                <div className={classNames('ftCell', 'priceCell', { noDisplay: isCollapsed })}>{priceCell}</div>
             </div>
         );
     }
@@ -193,7 +188,6 @@ class FoodTable extends Component {
                 expiryCell={food.expiry}
                 quantityCell={food.quantity}
                 unitCell={food.unit}
-                priceCell={food.price}
                 isCollapsed={this.state.isCollapsed}
             />
         ));
@@ -232,16 +226,10 @@ class FoodTable extends Component {
                         className="ftCell quantityCell"
                         style={this.state.isCollapsed ? collapsedColumn : expandedColumn}
                     >
-                        {' '}
-                        quantity{' '}
+                        quantity
                     </div>
                     <div className="ftCell unitCell" style={this.state.isCollapsed ? collapsedColumn : expandedColumn}>
-                        {' '}
-                        unit{' '}
-                    </div>
-                    <div className="ftCell priceCell" style={this.state.isCollapsed ? collapsedColumn : expandedColumn}>
-                        {' '}
-                        price{' '}
+                        unit
                     </div>
                 </div>
                 {this.generateFoodRows()}
@@ -271,10 +259,8 @@ export class Fridge extends Component {
     };
 
     render() {
-        console.log('Fridge', this.state.foodData);
-
         return (
-            <div className="fridge__compartmentView">
+            <div className="fridge">
                 <FridgeButtonGroup
                     selection={this.state.compartmentSelection}
                     onClickButton={newSelection => this.setState({ compartmentSelection: newSelection })}

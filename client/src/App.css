@@ -1,4 +1,12 @@
 /* --------------------------------------- */
+/* Variables */
+/* --------------------------------------- */
+
+:root {
+  --fudGreen: #a4de02;
+}
+
+/* --------------------------------------- */
 /* Left Panel */
 /* --------------------------------------- */
 
@@ -15,14 +23,16 @@
   float: left;
   width: 6em;
   height: 100vh;
-  border-right: medium dashed #a4de02;
+  border-right: medium dashed var(--fudGreen);
 }
 
 .leftPanel__umlaut {
+  padding-bottom: 10px;
+  padding-top: 5px;
   font-size: 3.5em;
-  color: #a4de02;
+  color: var(--fudGreen);
   text-align: center;
-  border-bottom: medium dotted #a4de02;
+  border-bottom: medium dotted var(--fudGreen);
 }
 
 .leftPanel__navIcon {
@@ -34,12 +44,12 @@
 }
 
 .leftPanel__icon {
-  color: #a4de02;
+  color: var(--fudGreen);
   padding: 0;
 }
 
 .leftPanel__navIcon:hover {
-  background-color: #a4de02;
+  background-color: var(--fudGreen);
   cursor:pointer;
 }
 .leftPanel__navIcon:hover .leftPanel__icon {
@@ -48,22 +58,18 @@
 
 .leftPanel__fridgeIcon {
   width:  4.5em;
-  background-image: url('Resources/fridge-green.svg');
+  background-image: url('assets/fridge-green.svg');
 }
 
 .leftPane__logInOut {
-  background: white;
-  color: #a4de02;
-  border: 2px solid #a4de02;
-  padding: 5px 10px;
   border-radius: 10px;
   margin: 0 5px 0 7px;
-  font-size: 1.1em;
+  font-size: 1.1em !important;
   position: absolute;
   bottom: 1em;
 }
 .leftPane__logInOut:hover {
-  background-color: #a4de02;
+  background-color: var(--fudGreen);
   color: white;
 }
 
@@ -72,7 +78,7 @@
 /* --------------------------------------- */
 
 .placeholder {
-  color: #a4de02;
+  color: var(--fudGreen);
   font-size: 70px;
   display: flex;
   justify-content: center;
@@ -84,6 +90,11 @@
 /* --------------------------------------- */
 /* Fridge */
 /* --------------------------------------- */
+.fridge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .fridge__buttonGroup {
   margin: 5vh auto 0 auto;
@@ -94,14 +105,8 @@
 .fridge__btnGroupRight  { border-radius: 0px 10px 10px 0px; }
 
 .fridge__selectedButton {
-  background-color: #a4de02 !important;
+  background-color: var(--fudGreen) !important;
   color: white !important;
-}
-
-.fridge__compartmentView {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .fridge__addIcon {
@@ -134,9 +139,17 @@
 
 .ftCell {
   box-sizing: border-box;
-  flex-grow: 1;
+  flex-grow: 2;
   width: 100%;
   overflow: hidden;
+}
+
+/*TODO*/
+.checkmarkCell {
+  /*width: 550px !important;*/
+}
+.iconCell {
+  /*width: 650px !important;*/
 }
 
 .foodIcon {
@@ -165,8 +178,8 @@
 }
 
 .foodActionEnabled {
-  color: #a4de02;
-  border: 3px solid #a4de02;
+  color: var(--fudGreen);
+  border: 3px solid var(--fudGreen);
   cursor: pointer;
 }
 
@@ -197,8 +210,8 @@ body {
 
 .greenButton {
   background: white;
-  color: #a4de02;
-  border: 2px solid #a4de02;
+  color: var(--fudGreen);
+  border: 2px solid var(--fudGreen);
   padding: 5px 10px;
   font-size: 1.2em;
 }
@@ -207,7 +220,7 @@ body {
 }
 
 .icon {
-  color: #a4de02;
+  color: var(--fudGreen);
   padding: 0;
 }
 

@@ -33,22 +33,31 @@ const addBook = (request, response) => {
     )
 };
 
-const getFoods = (request, response) => {
-    console.log("request to getFoods", request);
-    pool.query('SELECT * FROM foods', (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(200).json(results.rows)
-    })
-};
-
 app
     .route('/books')
     // GET endpoint
     .get(getBooks)
     // POST endpoint
     .post(addBook)
+
+const getFoods = (request, response) => {
+    console.log("request to getFoods", request);
+    pool.query(
+        'SELECT' +
+        '        name,' +
+        '        quantity,' +
+        '        units,' +
+        '        compartment,' +
+        '        to_char(to_date(cast(expiry as TEXT), \'YYYY-MM-DD\'), \'MM-DD-YYYY\') AS expiry,' +
+        '        icon,' +
+        '        userId ' +
+        'FROM foods;', (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+};
 
 app
     .route('/foods')

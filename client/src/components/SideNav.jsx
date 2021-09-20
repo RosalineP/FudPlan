@@ -3,8 +3,8 @@ import { Button, Nav } from 'react-bootstrap';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket, faDoorClosed, faUtensils } from '@fortawesome/free-solid-svg-icons';
-import whiteFridge from '../Resources/fridge-white.svg';
-import greenFridge from '../Resources/fridge-green.svg';
+import whiteFridge from '../assets/fridge-white.svg';
+import greenFridge from '../assets/fridge-green.svg';
 
 library.add(faShoppingBasket, faDoorClosed, faUtensils);
 
@@ -40,7 +40,7 @@ export class SideNav extends Component {
           </Nav.Item>
 
           <Nav.Item>
-            <Button bsPrefix="leftPane__logInOut" onClick={() => alert('todo')}> log out</Button>
+            <Button bsPrefix="leftPane__logInOut greenButton" onClick={() => alert('todo')}> log out</Button>
           </Nav.Item>
         </Nav>
       </div>
