@@ -16,7 +16,7 @@ const getBooks = (request, response) => {
         }
         response.status(200).json(results.rows)
     })
-}
+};
 
 const addBook = (request, response) => {
     const { author, title } = request.body
@@ -31,7 +31,17 @@ const addBook = (request, response) => {
             response.status(201).json({ status: 'success', message: 'Book added.' })
         }
     )
-}
+};
+
+const getFoods = (request, response) => {
+    console.log("request to getFoods", request);
+    pool.query('SELECT * FROM foods', (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+};
 
 app
     .route('/books')
@@ -39,6 +49,11 @@ app
     .get(getBooks)
     // POST endpoint
     .post(addBook)
+
+app
+    .route('/foods')
+    .get(getFoods)
+
 
 // Start server
 app.listen(process.env.PORT || 3002, () => {
