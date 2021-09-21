@@ -46,6 +46,7 @@ const getFoods = (request, response) => {
     console.log("request to getFoods", request);
     pool.query(
         'SELECT' +
+        '        id,' +
         '        name,' +
         '        quantity,' +
         '        units,' +
