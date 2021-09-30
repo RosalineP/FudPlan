@@ -98,6 +98,7 @@
 
 .fridge__buttonGroup {
   margin: 5vh auto 0 auto;
+  position:relative;
 }
 
 .fridge__btnGroupLeft { border-radius: 10px 0px 0px 10px; }
@@ -206,6 +207,85 @@
   color: #C0C5CE;
   border: 3px dotted #C0C5CE;
 }
+
+/* ----- Fridge: Add food popover ----- */
+.popOverContent {
+  visibility: visible;
+  border: 3px solid var(--fudGreen);
+  border-radius: 10px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  background-color: white;
+
+  position:absolute;
+  width: 15em;
+
+  z-index: 10;
+  top: -15px;
+  right: -260px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.popOverField{
+  margin-bottom: 0.2em;
+  border: 2px solid var(--fudGreen);
+  border-radius: 5px;
+  height: 44px;
+  width: 175px;
+  box-sizing: border-box;
+}
+.popOverField:focus {
+  outline: none;
+}
+
+.popOverQuantitiesText{
+  width: 82px;
+  float: left;
+  margin-right: 7px;
+}
+
+.popOverUnitSelect{
+  width: 87px;
+  float: right;
+}
+
+.popOverSelect{
+  width: 175px;
+  height: 43px;
+}
+
+.textFieldNotification{
+  font-size: 0.7em;
+  color: #FF7C0A;
+  height: 1.5em;
+}
+
+.optional{
+  margin-top: 1em;
+  color: var(--fudGreen);
+  font-size: 0.7em;
+}
+
+.popOverSubmitButton{
+  background: white;
+  color: #FED833;
+  border: 2px solid #FED833;
+  padding: 5px 10px;
+  font-size: 1.2em;
+  border-radius: 10px;
+  margin-top: 1em;
+}
+.popOverSubmitButton:hover{
+  background: #FED833;
+  color: white;
+}
+.popOverSubmitButton:focus {
+  outline: none;
+}
+
 /* --------------------------------------- */
 /* Util/Misc */
 /* --------------------------------------- */
@@ -247,7 +327,19 @@ body {
   display: none;
 }
 
+input, select, textarea{
+  color: #808080;
+  text-indent: 5px;
+  font-size: 16px;
+}
+
 /* I developed an entire feature without realizing my window was at 90% zoom. I don't want to redo the css ;; */
 html {
   zoom: 90%;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+}
+

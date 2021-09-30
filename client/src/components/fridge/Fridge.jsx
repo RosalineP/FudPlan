@@ -209,6 +209,7 @@ export class Fridge extends Component {
             <div className="fridge">
                 <FridgeButtonGroup
                     selection={compartmentSelection}
+                    loadFoods={this.loadFoods}
                     onClickButton={newSelection => this.setState({ compartmentSelection: newSelection })}
                 />
                 <FoodTable

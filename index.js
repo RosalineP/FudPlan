@@ -4,11 +4,19 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const { pool } = require('./config')
 
-const app = express()
+const app = express();
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+// app.use(express.json());
+app.use(express.json());
+app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+const corsOptions ={
+    origin:'*',
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+};
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const getBooks = (request, response) => {
@@ -43,13 +51,12 @@ app
     .post(addBook)
 
 const getFoods = (request, response) => {
-    console.log("request to getFoods", request);
     pool.query(
         'SELECT' +
         '        id,' +
         '        name,' +
         '        quantity,' +
-        '        units,' +
+        '        unit,' +
         '        compartment,' +
         '        to_char(to_date(cast(expiry as TEXT), \'YYYY-MM-DD\'), \'MM-DD-YYYY\') AS expiry,' +
         '        icon,' +
@@ -65,6 +72,27 @@ const getFoods = (request, response) => {
 app
     .route('/foods')
     .get(getFoods)
+
+
+const addFood = (request, response) => {
+    const payload = JSON.parse(Object.keys(request.body)[0]);
+    const { name, expiry, compartment, icon, quantity, unit } = payload;
+    const quantityValue = quantity.length > 0 ? quantity : null;
+
+    pool.query(
+        'INSERT INTO foods (name, expiry, compartment, icon, quantity, unit) VALUES ($1, $2, $3, $4, $5, $6)',
+        [name, expiry, compartment, icon, quantityValue, unit],
+        (error) => {
+            if (error) {
+                throw error
+            }
+            response.status(201).json({ status: 'success', message: 'Food added.' })
+        }
+    );
+};
+
+app.post('/addFood', addFood)
+
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

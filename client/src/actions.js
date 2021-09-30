@@ -4,11 +4,34 @@ const baseUrl = isProduction ? 'https://example-node-api-rosalinep.herokuapp.com
 export const getFoods = callBackFn => {
     fetch(baseUrl + '/foods')
         .then(response => response.json())
-        .then(data => {
-            console.log("data", data);
-            callBackFn(data);
-        })
+        .then(data => {callBackFn(data)})
         .catch(err => {
             console.log('getFoods error', err);
         });
 };
+
+// ToDo: I don't really like this pattern
+export const addFood = async (payload, callBackFn) => {
+    fetch(
+        baseUrl + '/addFood',
+        {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+        })
+        .then(res => callBackFn(res));
+};
+
+export const example = () => {
+    return new Promise((resolve, reject) => {
+        fetch(baseUrl + '/foods')
+            .then(response => response.json())
+            .then(data => {resolve(data);})
+            .catch(err => {reject(err);});
+    });
+};
+
+const fetchPromise =  fetch(baseUrl + '/foods');
