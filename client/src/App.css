@@ -3,7 +3,8 @@
 /* --------------------------------------- */
 
 :root {
-  --fudGreen: #a4de02;
+  --fudGreen: #A4DE02;
+  --fudOrange: #FED833;
 }
 
 /* --------------------------------------- */
@@ -116,6 +117,18 @@
   cursor:pointer;
 }
 
+.fridge__loadingText {
+  color: var(--fudGreen);
+  font-size: 30px;
+  position: fixed;
+  top: 50%;
+  left: 55%;
+  margin-top: -100px;
+  margin-left: -100px;
+}
+
+/* ----- Fridge: Table ----- */
+
 .fridge__tableAndActions {
   display: flex;
   width: 100%;
@@ -130,21 +143,33 @@
   align-items: center;
 }
 
-.fridge__loadingText {
-  color: var(--fudGreen);
-  font-size: 30px;
-  position: fixed;
-  top: 50%;
-  left: 55%;
-  margin-top: -100px;
-  margin-left: -100px;
+.fridge__tableRows {
+  height: 91vh;
+  overflow: scroll;
 }
 
-/* ----- Fridge: Table ----- */
+::-webkit-scrollbar {
+  background: transparent;
+}
+
+/* ToDo: For grey scrollbar */
+/*.fridge__tableRows:hover {*/
+/*  -webkit-mask-position: left top;*/
+/*}*/
+/*::-webkit-scrollbar {*/
+/*  width: 8px;*/
+/*}*/
+/*::-webkit-scrollbar-thumb {*/
+/*  background: #C0C5CE;*/
+/*  -webkit-border-radius: 1ex;*/
+/*}*/
+/*::-webkit-scrollbar-corner {*/
+/*  background: white;*/
+/*}*/
 
 .ftHeader {
   margin-top: 6vh;
-  border-bottom: 5px dashed #FED833;
+  border-bottom: 5px dashed var(--fudOrange);
   font-weight: bold;
   padding-bottom: 0.5em;
   color: #577504;
@@ -263,7 +288,7 @@
   height: 1.5em;
 }
 
-.optional{
+.optionalText{
   margin-top: 1em;
   color: var(--fudGreen);
   font-size: 0.7em;
@@ -271,15 +296,15 @@
 
 .popOverSubmitButton{
   background: white;
-  color: #FED833;
-  border: 2px solid #FED833;
+  color: var(--fudOrange);
+  border: 2px solid var(--fudOrange);
   padding: 5px 10px;
   font-size: 1.2em;
   border-radius: 10px;
   margin-top: 1em;
 }
 .popOverSubmitButton:hover{
-  background: #FED833;
+  background: var(--fudOrange);
   color: white;
 }
 .popOverSubmitButton:focus {

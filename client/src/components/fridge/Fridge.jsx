@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faCheck, faChevronCircleRight, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
-import { getFoods } from '../../actions';
+import { deleteFoods, getFoods } from '../../actions';
 
 import { FridgeButtonGroup } from './TopButtonGroup';
 
@@ -15,20 +15,25 @@ const classNames = require('classnames');
 const images = require.context('../../assets/icons', true);
 
 const FoodActionsButtons = props => {
-    const { classNames } = props;
+    const { classNames, checkedFoods, isActive, loadFoods, resetCheckedFoods } = props;
 
-    const deleteFood = () => {
-        console.log('hey');
+    const deleteFoodAction = () => {
+        if (isActive) {
+            deleteFoods({ ids: Array.from(checkedFoods) }).then(() => {
+                loadFoods();
+                resetCheckedFoods();
+            });
+        }
     };
 
     return (
         <div className="foodActionsBar">
-            <div className={classNames} onClick={() => deleteFood()}>
+            <div className={classNames} onClick={() => deleteFoodAction()}>
                 eat
             </div>
-            <div className={classNames} onClick={() => deleteFood()}>
-                expire
-            </div>
+            {/*<div className={classNames} onClick={() => deleteFoodAction()}>*/}
+            {/*    expire*/}
+            {/*</div>*/}
         </div>
     );
 };
@@ -65,7 +70,7 @@ const FoodRow = props => {
 };
 
 const FoodTable = props => {
-    const { foodData, compartmentSelection, infoRefreshed, loadFoodsFunction } = props;
+    const { foodData, compartmentSelection, infoRefreshed, loadFoods } = props;
 
     const [checkedFoods, setCheckedFoods] = useState(new Set());
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -75,7 +80,7 @@ const FoodTable = props => {
     };
 
     const reportFoodChecked = id => {
-        const oldSet = checkedFoods;
+        const oldSet = new Set(checkedFoods);
         let newSet;
         if (oldSet.has(id)) {
             oldSet.delete(id);
@@ -86,7 +91,7 @@ const FoodTable = props => {
         setCheckedFoods(newSet);
     };
 
-    const deHighlightActions = () => {
+    const resetCheckedFoods = () => {
         setCheckedFoods(new Set());
     };
 
@@ -110,11 +115,12 @@ const FoodTable = props => {
                     isCollapsed={isCollapsed}
                 />
             ));
-        return <div>{foodRows}</div>;
+        return <div className="fridge__tableRows">{foodRows}</div>;
     };
 
+    const foodActionButtonEnabled = infoRefreshed && checkedFoods.size > 0;
     const foodActionsBarClassNames = classNames('foodAction', {
-        foodActionEnabled: infoRefreshed && checkedFoods.size > 0,
+        foodActionEnabled: foodActionButtonEnabled,
         foodActionDisabled: !infoRefreshed || checkedFoods.size <= 0,
     });
 
@@ -145,10 +151,10 @@ const FoodTable = props => {
             </div>
             <FoodActionsButtons
                 classNames={foodActionsBarClassNames}
-                isActive={(checkedFoods.size > 0).toString()}
+                isActive={foodActionButtonEnabled}
                 checkedFoods={checkedFoods}
-                refreshAfterDelete={loadFoodsFunction}
-                deHighlightActions={deHighlightActions}
+                loadFoods={loadFoods}
+                resetCheckedFoods={resetCheckedFoods}
             />
         </div>
     );
@@ -180,7 +186,7 @@ export const Fridge = () => {
             <FoodTable
                 foodData={foodData}
                 compartmentSelection={compartmentSelection}
-                loadFoodsFunction={getFoods}
+                loadFoods={loadFoods}
                 infoRefreshed={infoRefreshed}
             />
         </div>
