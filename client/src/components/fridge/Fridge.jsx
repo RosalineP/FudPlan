@@ -47,9 +47,9 @@ const FoodRow = props => {
         <div className="ftRow">
             <div className="ftCell checkmarkCell" onClick={() => tickBox()}>
                 {checked ? (
-                    <FontAwesomeIcon className="icon" icon={['far', 'check-square']} size="lg" />
+                    <FontAwesomeIcon className="icon" icon={faCheckSquare} size="lg" />
                 ) : (
-                    <FontAwesomeIcon className="icon" icon={['far', 'square']} size="lg" />
+                    <FontAwesomeIcon className="icon" icon={faSquare} size="lg" />
                 )}
             </div>
             <div className="ftCell iconCell">
@@ -124,7 +124,7 @@ const FoodTable = props => {
                 <div className="fridgeTable">
                     <div className="ftRow ftHeader">
                         <div className="ftCell checkmarkCell">
-                            <FontAwesomeIcon className="icon" icon="check" size="lg" />
+                            <FontAwesomeIcon className="icon" icon={faCheck} size="lg" />
                         </div>
                         <div className="ftCell iconCell"> &nbsp; </div>
                         <div className="ftCell nameCell"> name </div>
@@ -133,7 +133,7 @@ const FoodTable = props => {
                             <FontAwesomeIcon
                                 className="icon clickable"
                                 onClick={() => toggleCollapse()}
-                                icon={isCollapsed ? 'chevron-circle-left' : 'chevron-circle-right'}
+                                icon={isCollapsed ? faChevronCircleLeft : faChevronCircleRight}
                                 size="lg"
                             />
                         </div>

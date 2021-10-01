@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { addFood } from '../../actions';
 
@@ -123,7 +124,7 @@ export const FridgeButtonGroup = props => {
             <FontAwesomeIcon
                 onClick={() => setIsPopOverOpen(!isPopOverOpen)}
                 className="icon fridge__addIcon"
-                icon="plus"
+                icon={faPlus}
                 size="lg"
             />
             {isPopOverOpen && <AddFood refreshAfterAdd={refreshAfterAdd} loadFoods={loadFoods} />}

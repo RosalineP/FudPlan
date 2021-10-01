@@ -20,7 +20,7 @@ export const SideNav = props => {
                 <Nav.Item className="leftPanel__umlaut">ü</Nav.Item>
 
                 <Nav.Item className="leftPanel__navIcon" onClick={() => setViewType('shop')}>
-                    <FontAwesomeIcon className="leftPanel__icon" icon={['fas', 'shopping-basket']} size="3x" />
+                    <FontAwesomeIcon className="leftPanel__icon" icon={faShoppingBasket} size="3x" />
                 </Nav.Item>
 
                 <Nav.Item
@@ -33,7 +33,7 @@ export const SideNav = props => {
                 </Nav.Item>
 
                 <Nav.Item className="leftPanel__navIcon" onClick={() => setViewType('recipe')}>
-                    <FontAwesomeIcon className="leftPanel__icon" icon={['fas', 'utensils']} size="3x" />
+                    <FontAwesomeIcon className="leftPanel__icon" icon={faUtensils} size="3x" />
                 </Nav.Item>
 
                 <Nav.Item>
