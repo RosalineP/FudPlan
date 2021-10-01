@@ -1,4 +1,4 @@
-import { Component, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faCheck, faChevronCircleRight, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -33,67 +33,49 @@ const FoodActionsBar = props => {
     );
 };
 
-class FoodRow extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked: this.props.isChecked,
-            icon: '',
-            name: '',
-            expiry: '',
-            quantity: '',
-            unit: '',
-        };
-    }
+const FoodRow = props => {
+    const { isChecked, iconCell, nameCell, expiryCell, isCollapsed, unitCell, quantityCell, onClickReportId } = props;
 
-    tickBox() {
-        this.props.onClickReportId();
-        this.setState({ checked: !this.state.checked });
-    }
+    const [checked, setChecked] = useState(isChecked);
 
-    render() {
-        const { iconCell, nameCell, expiryCell, isCollapsed, unitCell, quantityCell } = this.props;
-
-        let checkBox;
-        if (this.state.checked) {
-            checkBox = <FontAwesomeIcon className="icon" icon={['far', 'check-square']} size="lg" />;
-        } else {
-            checkBox = <FontAwesomeIcon className="icon" icon={['far', 'square']} size="lg" />;
-        }
-
-        return (
-            <div className="ftRow">
-                <div className="ftCell checkmarkCell" onClick={() => this.tickBox()}>
-                    {checkBox}
-                </div>
-                <div className="ftCell iconCell">
-                    <img className="foodIcon" src={images(iconCell).default} alt="food icon" />
-                </div>
-                <div className="ftCell nameCell">{nameCell}</div>
-                <div className="ftCell expiryCell">{expiryCell}</div>
-                <div className="ftCell collapseButtonCell"> </div>
-                <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>{quantityCell}</div>
-                <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>{unitCell}</div>
-            </div>
-        );
-    }
-}
-
-class FoodTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checkedFoods: new Set(),
-            isCollapsed: false,
-        };
-    }
-
-    toggleCollapse = () => {
-        this.setState({ isCollapsed: !this.state.isCollapsed });
+    const tickBox = () => {
+        onClickReportId();
+        setChecked(!checked);
     };
 
-    reportFoodChecked = id => {
-        const oldSet = this.state.checkedFoods;
+    return (
+        <div className="ftRow">
+            <div className="ftCell checkmarkCell" onClick={() => tickBox()}>
+                {checked ? (
+                    <FontAwesomeIcon className="icon" icon={['far', 'check-square']} size="lg" />
+                ) : (
+                    <FontAwesomeIcon className="icon" icon={['far', 'square']} size="lg" />
+                )}
+            </div>
+            <div className="ftCell iconCell">
+                <img className="foodIcon" src={images(iconCell).default} alt="food icon" />
+            </div>
+            <div className="ftCell nameCell">{nameCell}</div>
+            <div className="ftCell expiryCell">{expiryCell}</div>
+            <div className="ftCell collapseButtonCell"> </div>
+            <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>{quantityCell}</div>
+            <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>{unitCell}</div>
+        </div>
+    );
+};
+
+const FoodTable = props => {
+    const { foodData, compartmentSelection, infoRefreshed, loadFoodsFunction } = props;
+
+    const [checkedFoods, setCheckedFoods] = useState(new Set());
+    const [isCollapsed, setIsCollapsed] = useState(false);
+
+    const toggleCollapse = () => {
+        setIsCollapsed(!isCollapsed);
+    };
+
+    const reportFoodChecked = id => {
+        const oldSet = checkedFoods;
         let newSet;
         if (oldSet.has(id)) {
             oldSet.delete(id);
@@ -101,12 +83,14 @@ class FoodTable extends Component {
         } else {
             newSet = oldSet.add(id);
         }
-        this.setState({ checkedFoods: newSet });
+        setCheckedFoods(newSet);
     };
 
-    generateFoodRows = () => {
-        const { foodData, compartmentSelection, infoRefreshed } = this.props;
+    const deHighlightActions = () => {
+        setCheckedFoods(new Set());
+    };
 
+    const generateFoodRows = () => {
         if (!infoRefreshed) {
             return <div className="fridge__loadingText"> Loading... </div>;
         }
@@ -116,109 +100,89 @@ class FoodTable extends Component {
             .map(food => (
                 <FoodRow
                     key={food.id}
-                    onClickReportId={() => this.reportFoodChecked(food.id)}
-                    isChecked={this.state.checkedFoods.has(food.id)}
+                    onClickReportId={() => reportFoodChecked(food.id)}
+                    isChecked={checkedFoods.has(food.id)}
                     iconCell={food.icon}
                     nameCell={food.name}
                     expiryCell={food.expiry}
                     quantityCell={food.quantity}
                     unitCell={food.unit}
-                    isCollapsed={this.state.isCollapsed}
+                    isCollapsed={isCollapsed}
                 />
             ));
         return <div>{foodRows}</div>;
     };
 
-    render() {
-        const { isCollapsed, checkedFoods } = this.state;
-        const { infoRefreshed, loadFoodsFunction } = this.props;
+    const foodActionsBarClassNames = classNames('foodAction', {
+        foodActionEnabled: infoRefreshed && checkedFoods.size > 0,
+        foodActionDisabled: !infoRefreshed || checkedFoods.size <= 0,
+    });
 
-        const collapsedColumn = { display: 'none' };
-        const expandedColumn = {};
-
-        const foodActionsBarClassNames = classNames('foodAction', {
-            foodActionEnabled: infoRefreshed && checkedFoods.size > 0,
-            foodActionDisabled: !infoRefreshed || checkedFoods.size <= 0,
-        });
-
-        return (
-            <div className="fridge__tableAndActions">
-                <div className="fridge__table noHighlight">
-                    <div className="fridgeTable">
-                        <div className="ftRow ftHeader">
-                            <div className="ftCell checkmarkCell">
-                                <FontAwesomeIcon className="icon" icon="check" size="lg" />
-                            </div>
-                            <div className="ftCell iconCell"> &nbsp; </div>
-                            <div className="ftCell nameCell"> name </div>
-                            <div className="ftCell expiryCell"> expiry </div>
-                            <div className="ftCell collapseButtonCell">
-                                <FontAwesomeIcon
-                                    className="icon clickable"
-                                    onClick={() => this.toggleCollapse()}
-                                    icon={isCollapsed ? 'chevron-circle-left' : 'chevron-circle-right'}
-                                    size="lg"
-                                />
-                            </div>
-                            <div className="ftCell quantityCell" style={isCollapsed ? collapsedColumn : expandedColumn}>
-                                quantity
-                            </div>
-                            <div className="ftCell unitCell" style={isCollapsed ? collapsedColumn : expandedColumn}>
-                                unit
-                            </div>
+    return (
+        <div className="fridge__tableAndActions">
+            <div className="fridge__table noHighlight">
+                <div className="fridgeTable">
+                    <div className="ftRow ftHeader">
+                        <div className="ftCell checkmarkCell">
+                            <FontAwesomeIcon className="icon" icon="check" size="lg" />
                         </div>
-                        {this.generateFoodRows()}
+                        <div className="ftCell iconCell"> &nbsp; </div>
+                        <div className="ftCell nameCell"> name </div>
+                        <div className="ftCell expiryCell"> expiry </div>
+                        <div className="ftCell collapseButtonCell">
+                            <FontAwesomeIcon
+                                className="icon clickable"
+                                onClick={() => toggleCollapse()}
+                                icon={isCollapsed ? 'chevron-circle-left' : 'chevron-circle-right'}
+                                size="lg"
+                            />
+                        </div>
+                        <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>quantity</div>
+                        <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>unit</div>
                     </div>
+                    {generateFoodRows()}
                 </div>
-                <FoodActionsBar
-                    classNames={foodActionsBarClassNames}
-                    isActive={(checkedFoods.size > 0).toString()}
-                    checkedFoods={checkedFoods}
-                    refreshAfterDelete={loadFoodsFunction}
-                    deHighlightActions={this.deHighlightActions}
-                />
             </div>
-        );
-    }
-}
+            <FoodActionsBar
+                classNames={foodActionsBarClassNames}
+                isActive={(checkedFoods.size > 0).toString()}
+                checkedFoods={checkedFoods}
+                refreshAfterDelete={loadFoodsFunction}
+                deHighlightActions={deHighlightActions}
+            />
+        </div>
+    );
+};
 
-export class Fridge extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            compartmentSelection: 'fridge',
-            foodData: [],
-            infoRefreshed: false,
-        };
-    }
+export const Fridge = () => {
+    const [compartmentSelection, setCompartmentSelection] = useState('fridge');
+    const [foodData, setFoodData] = useState([]);
+    const [infoRefreshed, setInfoRefreshed] = useState(false);
 
-    componentDidMount = () => {
-        this.loadFoods();
-    };
+    useEffect(() => {
+        loadFoods();
+    }, []);
 
-    loadFoods = () => {
-        getFoods(foodData => {
-            this.setState({ foodData, infoRefreshed: true });
+    const loadFoods = () => {
+        getFoods().then(foodData => {
+            setFoodData(foodData);
+            setInfoRefreshed(true);
         });
     };
 
-    render() {
-        const { compartmentSelection, foodData, infoRefreshed } = this.state;
-
-        return (
-            <div className="fridge">
-                <FridgeButtonGroup
-                    selection={compartmentSelection}
-                    loadFoods={this.loadFoods}
-                    onClickButton={newSelection => this.setState({ compartmentSelection: newSelection })}
-                />
-                <FoodTable
-                    foodData={foodData}
-                    compartmentSelection={compartmentSelection}
-                    loadFoodsFunction={getFoods}
-                    infoRefreshed={infoRefreshed}
-                />
-            </div>
-        );
-    }
-}
+    return (
+        <div className="fridge">
+            <FridgeButtonGroup
+                selection={compartmentSelection}
+                loadFoods={loadFoods}
+                onClickButton={newSelection => setCompartmentSelection(newSelection)}
+            />
+            <FoodTable
+                foodData={foodData}
+                compartmentSelection={compartmentSelection}
+                loadFoodsFunction={getFoods}
+                infoRefreshed={infoRefreshed}
+            />
+        </div>
+    );
+};

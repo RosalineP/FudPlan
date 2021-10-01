@@ -3,8 +3,9 @@ import { useState } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { addFood } from '../../actions';
+
 import { CompartmentSelect, IconSelect, QuantityAndUnitSelect, TextField } from './AddFood';
-import {addFood} from "../../actions";
 
 const classNames = require('classnames');
 
@@ -30,7 +31,9 @@ const FridgeButton = props => {
     );
 };
 
-const AddFood = (props) => {
+const AddFood = props => {
+    const { loadFoods } = props;
+
     const [name, setName] = useState('');
     const [nameWarning, setNameWarning] = useState('');
 
@@ -52,8 +55,9 @@ const AddFood = (props) => {
     const [priceWarning, setPriceWarning] = useState('');
 
     const addFoodToDB = () => {
-        addFood({name, expiry, compartment: compartment.value, icon: icon.value, quantity, unit},
-            () => { props.loadFoods() });
+        addFood({ name, expiry, compartment: compartment.value, icon: icon.value, quantity, unit }).then(() =>
+            loadFoods()
+        );
     };
 
     return (
@@ -79,11 +83,7 @@ const AddFood = (props) => {
                 setCompartment={setCompartment}
             />
 
-            <IconSelect
-                icon={icon}
-                setIcon={setIcon}
-                iconWarning={iconWarning}
-            />
+            <IconSelect icon={icon} setIcon={setIcon} iconWarning={iconWarning} />
 
             <div className="optional"> - optional - </div>
 
@@ -103,7 +103,7 @@ const AddFood = (props) => {
                 warning={priceWarning}
             />
 
-            <Button bsPrefix="popOverSubmitButton" onClick={e => addFoodToDB()}>
+            <Button bsPrefix="popOverSubmitButton" onClick={() => addFoodToDB()}>
                 submit
             </Button>
         </div>

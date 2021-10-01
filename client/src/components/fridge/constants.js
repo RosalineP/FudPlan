@@ -1,21 +1,21 @@
 export const SELECT_STYLES = {
     input: base => ({
         ...base,
-        color: "#808080"
+        color: '#808080',
     }),
     singleValue: base => ({
         ...base,
-        color: "#808080"
+        color: '#808080',
     }),
     control: (base, state) => ({
         ...base,
         border: state.isFocused ? 0 : 0,
         // This line disable the blue border
         boxShadow: state.isFocused ? 0 : 0,
-        "&:hover": {
-            border: state.isFocused ? 0 : 0
-        }
-    })
+        '&:hover': {
+            border: state.isFocused ? 0 : 0,
+        },
+    }),
 };
 
 export const SELECT_THEME = theme => ({
@@ -121,7 +121,6 @@ export const OPTIONS_ICON = [
     { value: './dairy/milk.svg', label: 'milk' },
     { value: './dairy/yogurt.svg', label: 'yogurt' },
 
-
     { value: './drinks/alcohol.svg', label: 'alcohol' },
     { value: './drinks/beer.svg', label: 'beer' },
     { value: './drinks/coffee.svg', label: 'coffee' },
@@ -130,5 +129,5 @@ export const OPTIONS_ICON = [
     { value: './drinks/soda.svg', label: 'soda' },
     { value: './drinks/spirits.svg', label: 'spirits' },
     { value: './drinks/tea.svg', label: 'tea' },
-    { value: './drinks/wine.svg', label: 'wine' }
+    { value: './drinks/wine.svg', label: 'wine' },
 ];

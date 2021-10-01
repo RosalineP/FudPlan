@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { SideNav } from './components/SideNav';
 import { MainView } from './components/MainView';
 
-function App() {
+const App = () => {
     const [viewType, setViewType] = useState('fridge');
 
     return (
@@ -13,6 +13,6 @@ function App() {
             <MainView viewType={viewType} />
         </div>
     );
-}
+};
 
 export default App;
