@@ -6,33 +6,13 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { addFood } from '../../actions';
 
-import { CompartmentSelect, IconSelect, QuantityAndUnitSelect, TextField } from './AddFood';
+import { isValidDate } from '../util';
+
+import { CompartmentSelect, IconSelect, QuantityAndUnitSelect, TextField } from './AddFoodForm';
 
 const classNames = require('classnames');
 
-const FridgeButton = props => {
-    const { compartment, selection, onClickButton } = props;
-
-    const styling =
-        compartment === 'freezer'
-            ? 'fridge__btnGroupLeft'
-            : compartment === 'fridge'
-            ? 'fridge__btnGroupMiddle'
-            : 'fridge__btnGroupRight';
-
-    return (
-        <Button
-            className={classNames('greenButton', styling, {
-                fridge__selectedButton: selection === compartment,
-            })}
-            onClick={() => onClickButton(compartment)}
-        >
-            {compartment}
-        </Button>
-    );
-};
-
-const AddFood = props => {
+const AddFoodPopover = props => {
     const { loadFoods } = props;
 
     const [name, setName] = useState('');
@@ -55,10 +35,57 @@ const AddFood = props => {
     const [price, setPrice] = useState('');
     const [priceWarning, setPriceWarning] = useState('');
 
+    const validateTextField = (warningMessage, field, setFieldWarning) => {
+        const invalid = field === null || field.length === 0 || field.trim() === '';
+        setFieldWarning(invalid ? warningMessage : '');
+
+        return invalid;
+    };
+
+    const validateDateField = () => {
+        const invalid = !isValidDate(expiry);
+        setExpiryWarning(invalid ? 'please enter a valid date' : '');
+
+        return invalid;
+    };
+
+    const validateNumericalField = () => {
+        const invalid = quantity.trim() !== '' && isNaN(quantity);
+        setQuantityWarning(invalid ? 'must be numerical' : '');
+
+        return invalid;
+    };
+
+    const validateAddFoodFields = () => {
+        const emptinessWarning = 'required field';
+
+        if (name.length === 0 || !name.trim()) {
+            setNameWarning(emptinessWarning);
+        } else {
+            setNameWarning('');
+        }
+
+        const nameInvalid = validateTextField(emptinessWarning, name, setNameWarning);
+        const expiryInvalid = validateDateField();
+        const compartmentInvalid = validateTextField(emptinessWarning, compartment.value, setCompartmentWarning);
+        const iconInvalid = validateTextField(emptinessWarning, icon.value, setIconWarning);
+
+        const quantityInvalid = validateNumericalField();
+
+        return nameInvalid || expiryInvalid || compartmentInvalid || iconInvalid || quantityInvalid;
+    };
+
     const addFoodToDB = () => {
-        addFood({ name, expiry, compartment: compartment.value, icon: icon.value, quantity, unit }).then(() =>
-            loadFoods()
-        );
+        if (!validateAddFoodFields()) {
+            addFood({
+                name: name.trim(),
+                expiry,
+                compartment: compartment.value,
+                icon: icon.value,
+                quantity,
+                unit,
+            }).then(() => loadFoods());
+        }
     };
 
     return (
@@ -111,6 +138,28 @@ const AddFood = props => {
     );
 };
 
+const FridgeButton = props => {
+    const { compartment, selection, onClickButton } = props;
+
+    const styling =
+        compartment === 'freezer'
+            ? 'fridge__btnGroupLeft'
+            : compartment === 'fridge'
+            ? 'fridge__btnGroupMiddle'
+            : 'fridge__btnGroupRight';
+
+    return (
+        <Button
+            className={classNames('greenButton', styling, {
+                fridge__selectedButton: selection === compartment,
+            })}
+            onClick={() => onClickButton(compartment)}
+        >
+            {compartment}
+        </Button>
+    );
+};
+
 export const FridgeButtonGroup = props => {
     const { selection, onClickButton, refreshAfterAdd, loadFoods } = props;
     const [isPopOverOpen, setIsPopOverOpen] = useState(false);
@@ -127,7 +176,7 @@ export const FridgeButtonGroup = props => {
                 icon={faPlus}
                 size="lg"
             />
-            {isPopOverOpen && <AddFood refreshAfterAdd={refreshAfterAdd} loadFoods={loadFoods} />}
+            {isPopOverOpen && <AddFoodPopover refreshAfterAdd={refreshAfterAdd} loadFoods={loadFoods} />}
         </ButtonGroup>
     );
 };

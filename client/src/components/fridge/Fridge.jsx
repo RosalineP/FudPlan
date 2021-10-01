@@ -6,7 +6,7 @@ import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
 import { getFoods } from '../../actions';
 
-import { FridgeButtonGroup } from './ButtonGroup';
+import { FridgeButtonGroup } from './TopButtonGroup';
 
 library.add(faPlus, faEdit, faSquare, faCheckSquare, faCheck, faChevronCircleRight, faChevronCircleLeft);
 
@@ -14,7 +14,7 @@ const classNames = require('classnames');
 
 const images = require.context('../../assets/icons', true);
 
-const FoodActionsBar = props => {
+const FoodActionsButtons = props => {
     const { classNames } = props;
 
     const deleteFood = () => {
@@ -90,7 +90,7 @@ const FoodTable = props => {
         setCheckedFoods(new Set());
     };
 
-    const generateFoodRows = () => {
+    const renderFoodRows = () => {
         if (!infoRefreshed) {
             return <div className="fridge__loadingText"> Loading... </div>;
         }
@@ -140,10 +140,10 @@ const FoodTable = props => {
                         <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>quantity</div>
                         <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>unit</div>
                     </div>
-                    {generateFoodRows()}
+                    {renderFoodRows()}
                 </div>
             </div>
-            <FoodActionsBar
+            <FoodActionsButtons
                 classNames={foodActionsBarClassNames}
                 isActive={(checkedFoods.size > 0).toString()}
                 checkedFoods={checkedFoods}
