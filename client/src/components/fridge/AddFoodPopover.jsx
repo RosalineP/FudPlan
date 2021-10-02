@@ -8,7 +8,7 @@ import { addFood } from '../../actions';
 import { CompartmentSelect, IconSelect, QuantityAndUnitSelect, TextField } from './AddFoodForm';
 
 export const AddFoodPopover = props => {
-    const { loadFoods } = props;
+    const { loadFoods, setError } = props;
 
     const [name, setName] = useState('');
     const [nameWarning, setNameWarning] = useState('');
@@ -83,7 +83,11 @@ export const AddFoodPopover = props => {
                 icon: icon.value,
                 quantity,
                 unit: unit !== null ? unit.value : null,
-            }).then(() => loadFoods());
+            })
+                .then(() => loadFoods())
+                .catch(() => {
+                    setError(true);
+                });
         }
     };
 

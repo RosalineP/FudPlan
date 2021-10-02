@@ -28,10 +28,12 @@ const getFoods = (request, response) => {
         '        to_char(to_date(cast(expiry as TEXT), \'YYYY-MM-DD\'), \'MM-DD-YYYY\') AS expiry,' +
         '        icon,' +
         '        userId ' +
-        'FROM foods;',
+        'FROM foods ' +
+        'ORDER BY id DESC;',
         (error, results) => {
             if (error) {
                 console.log(error);
+                response.status(500).json({status: 'failure', message: 'Eugh!'});
             }
             response.status(200).json(results.rows);
         }
@@ -53,13 +55,36 @@ const addFood = (request, response) => {
         (error) => {
             if (error) {
                 console.log(error);
+                response.status(500).json({status: 'failure', message: 'Eugh!'});
             }
-            response.status(201).json({ status: 'success', message: 'Food added.' })
+            response.status(200).json({ status: 'success', message: 'Food added.' })
         }
     );
 };
 
 app.post('/addFood', addFood)
+
+
+const deleteFoods = (request, response) => {
+    const payload = JSON.parse(Object.keys(request.body)[0]);
+    const { ids } = payload;
+
+    pool.query(
+        'DELETE FROM foods WHERE id = ANY($1::int[])',
+        [ids],
+        (error) => {
+            if (error) {
+                console.log(error);
+                response.status(500).json({status: 'failure', message: 'Eugh!'});
+            }
+            response.status(200).json({ status: 'success', message: 'Food(s) deleted.' })
+        }
+    );
+};
+
+app.post('/deleteFoods', deleteFoods)
+
+
 
 
 

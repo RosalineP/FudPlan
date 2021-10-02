@@ -1,28 +1,37 @@
 import { useEffect, useState } from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faCheck, faChevronCircleRight, faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCheck,
+    faChevronCircleRight,
+    faChevronCircleLeft,
+    faSkullCrossbones,
+    faCaretDown,
+    faAngleDown,
+    faAngleUp,
+} from '@fortawesome/free-solid-svg-icons';
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
 import { deleteFoods, getFoods } from '../../actions';
 
 import { FridgeButtonGroup } from './TopButtonGroup';
 
-library.add(faPlus, faEdit, faSquare, faCheckSquare, faCheck, faChevronCircleRight, faChevronCircleLeft);
-
 const classNames = require('classnames');
 
 const images = require.context('../../assets/icons', true);
 
 const FoodActionsButtons = props => {
-    const { classNames, checkedFoods, isActive, loadFoods, resetCheckedFoods } = props;
+    const { classNames, checkedFoods, isActive, loadFoods, resetCheckedFoods, setError } = props;
 
     const deleteFoodAction = () => {
         if (isActive) {
-            deleteFoods({ ids: Array.from(checkedFoods) }).then(() => {
-                loadFoods();
-                resetCheckedFoods();
-            });
+            deleteFoods({ ids: Array.from(checkedFoods) })
+                .then(() => {
+                    loadFoods();
+                    resetCheckedFoods();
+                })
+                .catch(() => {
+                    setError(true);
+                });
         }
     };
 
@@ -31,9 +40,9 @@ const FoodActionsButtons = props => {
             <div className={classNames} onClick={() => deleteFoodAction()}>
                 eat
             </div>
-            {/*<div className={classNames} onClick={() => deleteFoodAction()}>*/}
+            {/* <div className={classNames} onClick={() => deleteFoodAction()}>*/}
             {/*    expire*/}
-            {/*</div>*/}
+            {/* </div>*/}
         </div>
     );
 };
@@ -70,10 +79,13 @@ const FoodRow = props => {
 };
 
 const FoodTable = props => {
-    const { foodData, compartmentSelection, infoRefreshed, loadFoods } = props;
+    const { foodData, compartmentSelection, infoRefreshed, loadFoods, error, setError } = props;
 
     const [checkedFoods, setCheckedFoods] = useState(new Set());
     const [isCollapsed, setIsCollapsed] = useState(false);
+
+    const [nameSort, setNameSort] = useState(undefined);
+    const [expirySort, setExpirySort] = useState(undefined);
 
     const toggleCollapse = () => {
         setIsCollapsed(!isCollapsed);
@@ -95,12 +107,24 @@ const FoodTable = props => {
         setCheckedFoods(new Set());
     };
 
+    const sortRows = (sorted, foodRows, cell) => {
+        return foodRows.sort((food1, food2) => {
+            if (food1.props[cell] < food2.props[cell]) {
+                return sorted === 'up' ? -1 : 1;
+            }
+            if (food1.props[cell] > food2.props[cell]) {
+                return sorted === 'up' ? 1 : -1;
+            }
+            return 0;
+        });
+    };
+
     const renderFoodRows = () => {
         if (!infoRefreshed) {
             return <div className="fridge__loadingText"> Loading... </div>;
         }
 
-        const foodRows = foodData
+        let foodRows = foodData
             .filter(food => food.compartment === compartmentSelection)
             .map(food => (
                 <FoodRow
@@ -115,7 +139,26 @@ const FoodTable = props => {
                     isCollapsed={isCollapsed}
                 />
             ));
+        if (nameSort !== undefined) {
+            foodRows = sortRows(nameSort, foodRows, 'nameCell');
+        }
+
+        if (expirySort !== undefined) {
+            foodRows = sortRows(expirySort, foodRows, 'expiryCell');
+        }
+
         return <div className="fridge__tableRows">{foodRows}</div>;
+    };
+
+    const sort = (sorted, sorter) => {
+        // todo: probably this can just be bool and undefined, lol
+        if (sorted === undefined) {
+            sorter('down');
+        } else if (sorted === 'up') {
+            sorter('down');
+        } else if (sorted === 'down') {
+            sorter('up');
+        }
     };
 
     const foodActionButtonEnabled = infoRefreshed && checkedFoods.size > 0;
@@ -124,29 +167,64 @@ const FoodTable = props => {
         foodActionDisabled: !infoRefreshed || checkedFoods.size <= 0,
     });
 
+    const errorDisplay = (
+        <>
+            <div className="ftRow errorDisplay">
+                <div className="horizontalSpacer" />
+                <FontAwesomeIcon className="errorIcon" icon={faSkullCrossbones} size="10x" />
+            </div>
+            <div className="ftRow errorText">
+                <div className="horizontalSpacer" />
+                <div className="errorText"> öops; please refresh </div>
+            </div>
+        </>
+    );
+
+    const sortingIcon = (sorted, sorter) => {
+        return (
+            <FontAwesomeIcon
+                className="icon clickable"
+                icon={sorted === 'down' ? faAngleUp : faAngleDown}
+                onClick={() => sort(sorted, sorter)}
+            />
+        );
+    };
+
+    const headerRow = (
+        <div className="ftRow ftHeader">
+            <div className="ftCell checkmarkCell">
+                <FontAwesomeIcon className="icon" icon={faCheck} size="lg" />
+            </div>
+            <div className="ftCell iconCell"> &nbsp; </div>
+            <div className="ftCell nameCell">
+                name &nbsp;
+                {sortingIcon(nameSort, setNameSort)}
+            </div>
+            <div className="ftCell expiryCell">
+                expiry &nbsp;
+                {sortingIcon(expirySort, setExpirySort)}
+            </div>
+            <div className="ftCell collapseButtonCell">
+                <FontAwesomeIcon
+                    className="icon clickable"
+                    onClick={() => toggleCollapse()}
+                    icon={isCollapsed ? faChevronCircleLeft : faChevronCircleRight}
+                    size="lg"
+                />
+            </div>
+            <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>quantity</div>
+            <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>unit</div>
+        </div>
+    );
+
     return (
         <div className="fridge__tableAndActions">
             <div className="fridge__table noHighlight">
                 <div className="fridgeTable">
-                    <div className="ftRow ftHeader">
-                        <div className="ftCell checkmarkCell">
-                            <FontAwesomeIcon className="icon" icon={faCheck} size="lg" />
-                        </div>
-                        <div className="ftCell iconCell"> &nbsp; </div>
-                        <div className="ftCell nameCell"> name </div>
-                        <div className="ftCell expiryCell"> expiry </div>
-                        <div className="ftCell collapseButtonCell">
-                            <FontAwesomeIcon
-                                className="icon clickable"
-                                onClick={() => toggleCollapse()}
-                                icon={isCollapsed ? faChevronCircleLeft : faChevronCircleRight}
-                                size="lg"
-                            />
-                        </div>
-                        <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>quantity</div>
-                        <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>unit</div>
-                    </div>
-                    {renderFoodRows()}
+                    {headerRow}
+
+                    {error && errorDisplay}
+                    {!error && renderFoodRows()}
                 </div>
             </div>
             <FoodActionsButtons
@@ -155,6 +233,7 @@ const FoodTable = props => {
                 checkedFoods={checkedFoods}
                 loadFoods={loadFoods}
                 resetCheckedFoods={resetCheckedFoods}
+                setError={setError}
             />
         </div>
     );
@@ -164,16 +243,21 @@ export const Fridge = () => {
     const [compartmentSelection, setCompartmentSelection] = useState('fridge');
     const [foodData, setFoodData] = useState([]);
     const [infoRefreshed, setInfoRefreshed] = useState(false);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         loadFoods();
     }, []);
 
     const loadFoods = () => {
-        getFoods().then(foodData => {
-            setFoodData(foodData);
-            setInfoRefreshed(true);
-        });
+        getFoods()
+            .then(foodData => {
+                setFoodData(foodData);
+                setInfoRefreshed(true);
+            })
+            .catch(() => {
+                setError(true);
+            });
     };
 
     return (
@@ -181,13 +265,16 @@ export const Fridge = () => {
             <FridgeButtonGroup
                 selection={compartmentSelection}
                 loadFoods={loadFoods}
+                setError={setError}
                 onClickButton={newSelection => setCompartmentSelection(newSelection)}
             />
             <FoodTable
                 foodData={foodData}
                 compartmentSelection={compartmentSelection}
                 loadFoods={loadFoods}
+                setError={setError}
                 infoRefreshed={infoRefreshed}
+                error={error}
             />
         </div>
     );

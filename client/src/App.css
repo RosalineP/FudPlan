@@ -5,6 +5,7 @@
 :root {
   --fudGreen: #A4DE02;
   --fudOrange: #FED833;
+  --fudRed: #DE3614;
 }
 
 /* --------------------------------------- */
@@ -146,6 +147,23 @@
 .fridge__tableRows {
   height: 91vh;
   overflow: scroll;
+}
+
+.horizontalSpacer {
+  width: 75px;
+}
+.errorDisplay {
+  justify-content: center;
+  margin-top: 100px !important;
+  color: var(--fudRed) !important;
+  font-size: 20px;
+}
+.errorText {
+  margin-top: 20px;
+  justify-content: center;
+  color: var(--fudRed) !important;
+  font-size: 16px;
+  font-weight: lighter;
 }
 
 ::-webkit-scrollbar {
@@ -348,8 +366,16 @@ body {
   padding: 0;
 }
 
+.errorIcon {
+  color: var(--fudRed);
+}
+
 .noDisplay {
   display: none;
+}
+
+.clickable {
+  cursor:pointer;
 }
 
 input, select, textarea{

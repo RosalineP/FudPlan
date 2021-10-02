@@ -31,7 +31,7 @@ const FridgeButton = props => {
 };
 
 export const FridgeButtonGroup = props => {
-    const { selection, onClickButton, refreshAfterAdd, loadFoods } = props;
+    const { selection, onClickButton, refreshAfterAdd, loadFoods, setError } = props;
     const [isPopOverOpen, setIsPopOverOpen] = useState(false);
 
     return (
@@ -46,7 +46,9 @@ export const FridgeButtonGroup = props => {
                 icon={faPlus}
                 size="lg"
             />
-            {isPopOverOpen && <AddFoodPopover refreshAfterAdd={refreshAfterAdd} loadFoods={loadFoods} />}
+            {isPopOverOpen && (
+                <AddFoodPopover refreshAfterAdd={refreshAfterAdd} loadFoods={loadFoods} setError={setError} />
+            )}
         </ButtonGroup>
     );
 };
