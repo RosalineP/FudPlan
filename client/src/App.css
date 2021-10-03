@@ -209,6 +209,10 @@
   overflow: hidden;
 }
 
+.quantityCell {
+  /*width: 10px;*/
+}
+
 /*TODO*/
 .checkmarkCell {
   /*width: 550px !important;*/

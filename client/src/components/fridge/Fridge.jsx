@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
-import { deleteFoods, getFoods } from '../../actions';
+import { decrementFood, deleteFoods, getFoods } from '../../actions';
 
 import { FridgeButtonGroup } from './TopButtonGroup';
 
@@ -48,22 +48,45 @@ const FoodActionsButtons = props => {
 };
 
 const FoodRow = props => {
-    const { isChecked, iconCell, nameCell, expiryCell, isCollapsed, unitCell, quantityCell, onClickReportId } = props;
-
+    const {
+        isChecked,
+        iconCell,
+        nameCell,
+        expiryCell,
+        isCollapsed,
+        unitCell,
+        quantityCell,
+        onClickReportId,
+        loadFoods,
+        setError,
+        id,
+    } = props;
     const [checked, setChecked] = useState(isChecked);
+
+    useEffect(() => {
+        setChecked(isChecked);
+    }, [isChecked]);
 
     const tickBox = () => {
         onClickReportId();
         setChecked(!checked);
     };
 
+    const deIncrementQuantity = () => {
+        decrementFood({ id, quantity: quantityCell })
+            .then(() => {
+                loadFoods();
+            })
+            .catch(() => setError(true));
+    };
+
     return (
         <div className="ftRow">
             <div className="ftCell checkmarkCell" onClick={() => tickBox()}>
                 {checked ? (
-                    <FontAwesomeIcon className="icon" icon={faCheckSquare} size="lg" />
+                    <FontAwesomeIcon className="icon clickable" icon={faCheckSquare} size="lg" />
                 ) : (
-                    <FontAwesomeIcon className="icon" icon={faSquare} size="lg" />
+                    <FontAwesomeIcon className="icon clickable" icon={faSquare} size="lg" />
                 )}
             </div>
             <div className="ftCell iconCell">
@@ -72,7 +95,21 @@ const FoodRow = props => {
             <div className="ftCell nameCell">{nameCell}</div>
             <div className="ftCell expiryCell">{expiryCell}</div>
             <div className="ftCell collapseButtonCell"> </div>
-            <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>{quantityCell}</div>
+            <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>
+                {quantityCell}
+                {quantityCell !== null && quantityCell !== 0 && (
+                    <>
+                        &nbsp;
+                        <FontAwesomeIcon
+                            className="icon clickable"
+                            icon={faCaretDown}
+                            onClick={() => {
+                                deIncrementQuantity();
+                            }}
+                        />
+                    </>
+                )}
+            </div>
             <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>{unitCell}</div>
         </div>
     );
@@ -81,11 +118,37 @@ const FoodRow = props => {
 const FoodTable = props => {
     const { foodData, compartmentSelection, infoRefreshed, loadFoods, error, setError } = props;
 
+    const [foodDisplay, setFoodDisplay] = useState(undefined);
+
     const [checkedFoods, setCheckedFoods] = useState(new Set());
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const [nameSort, setNameSort] = useState(undefined);
     const [expirySort, setExpirySort] = useState(undefined);
+
+    useEffect(() => {
+        if (infoRefreshed) {
+            const foodRows = foodData // todo: Probably it would be more efficient to maintain an array of ids?
+                .filter(food => food.compartment === compartmentSelection)
+                .map(food => (
+                    <FoodRow
+                        key={food.id}
+                        id={food.id}
+                        onClickReportId={() => reportFoodChecked(food.id)}
+                        loadFoods={loadFoods}
+                        setError={setError}
+                        isChecked={checkedFoods.has(food.id)}
+                        iconCell={food.icon}
+                        nameCell={food.name}
+                        expiryCell={food.expiry}
+                        quantityCell={food.quantity}
+                        unitCell={food.unit}
+                        isCollapsed={isCollapsed}
+                    />
+                ));
+            setFoodDisplay(foodRows);
+        }
+    }, [infoRefreshed, foodData, checkedFoods]);
 
     const toggleCollapse = () => {
         setIsCollapsed(!isCollapsed);
@@ -107,16 +170,33 @@ const FoodTable = props => {
         setCheckedFoods(new Set());
     };
 
-    const sortRows = (sorted, foodRows, cell) => {
-        return foodRows.sort((food1, food2) => {
-            if (food1.props[cell] < food2.props[cell]) {
-                return sorted === 'up' ? -1 : 1;
-            }
-            if (food1.props[cell] > food2.props[cell]) {
-                return sorted === 'up' ? 1 : -1;
-            }
-            return 0;
-        });
+    const sortRows = (sorted, cell) => {
+        if (cell === 'nameCell') {
+            return foodDisplay.sort((food1, food2) => {
+                if (food1.props[cell] < food2.props[cell]) {
+                    return sorted === 'down' ? -1 : 1;
+                } else if (food1.props[cell] > food2.props[cell]) {
+                    return sorted === 'down' ? 1 : -1;
+                } else {
+                    return 0;
+                }
+            });
+        } else {
+            return foodDisplay.sort((food1, food2) => {
+                const dateSplit1 = food1.props[cell].split('-');
+                const dateValue1 = dateSplit1[2] + dateSplit1[0] + dateSplit1; // gross. Todo: make cleaner
+                const dateSplit2 = food2.props[cell].split('-');
+                const dateValue2 = dateSplit2[2] + dateSplit2[0] + dateSplit2;
+
+                if (dateValue1 < dateValue2) {
+                    return sorted === 'down' ? -1 : 1;
+                } else if (dateValue1 > dateValue2) {
+                    return sorted === 'down' ? 1 : -1;
+                } else {
+                    return 0;
+                }
+            });
+        }
     };
 
     const renderFoodRows = () => {
@@ -124,41 +204,27 @@ const FoodTable = props => {
             return <div className="fridge__loadingText"> Loading... </div>;
         }
 
-        let foodRows = foodData
-            .filter(food => food.compartment === compartmentSelection)
-            .map(food => (
-                <FoodRow
-                    key={food.id}
-                    onClickReportId={() => reportFoodChecked(food.id)}
-                    isChecked={checkedFoods.has(food.id)}
-                    iconCell={food.icon}
-                    nameCell={food.name}
-                    expiryCell={food.expiry}
-                    quantityCell={food.quantity}
-                    unitCell={food.unit}
-                    isCollapsed={isCollapsed}
-                />
-            ));
-        if (nameSort !== undefined) {
-            foodRows = sortRows(nameSort, foodRows, 'nameCell');
-        }
-
-        if (expirySort !== undefined) {
-            foodRows = sortRows(expirySort, foodRows, 'expiryCell');
-        }
-
-        return <div className="fridge__tableRows">{foodRows}</div>;
+        return <div className="fridge__tableRows">{foodDisplay}</div>;
     };
 
-    const sort = (sorted, sorter) => {
-        // todo: probably this can just be bool and undefined, lol
-        if (sorted === undefined) {
-            sorter('down');
-        } else if (sorted === 'up') {
-            sorter('down');
-        } else if (sorted === 'down') {
-            sorter('up');
+    const doSort = (sort, setSort, cellName) => {
+        if (sort === undefined || sort === 'up') {
+            setSort('down');
+            setFoodDisplay(sortRows('down', cellName));
+        } else if (sort === 'down') {
+            setSort('up');
+            setFoodDisplay(sortRows('up', cellName));
         }
+    };
+
+    const sortingIcon = (sort, setSort, cellName) => {
+        return (
+            <FontAwesomeIcon
+                className="icon clickable"
+                icon={sort === 'down' ? faAngleUp : faAngleDown}
+                onClick={() => doSort(sort, setSort, cellName)}
+            />
+        );
     };
 
     const foodActionButtonEnabled = infoRefreshed && checkedFoods.size > 0;
@@ -180,29 +246,36 @@ const FoodTable = props => {
         </>
     );
 
-    const sortingIcon = (sorted, sorter) => {
-        return (
-            <FontAwesomeIcon
-                className="icon clickable"
-                icon={sorted === 'down' ? faAngleUp : faAngleDown}
-                onClick={() => sort(sorted, sorter)}
-            />
-        );
+    const toggleAllCheckMarks = () => {
+        if (checkedFoods.size > 0) {
+            resetCheckedFoods();
+        } else {
+            const ids = foodDisplay.map(food => food.props.id);
+            const newSet = new Set();
+            ids.forEach(id => newSet.add(id));
+
+            setCheckedFoods(newSet);
+        }
     };
 
     const headerRow = (
         <div className="ftRow ftHeader">
             <div className="ftCell checkmarkCell">
-                <FontAwesomeIcon className="icon" icon={faCheck} size="lg" />
+                <FontAwesomeIcon
+                    className="icon clickable"
+                    icon={faCheck}
+                    size="lg"
+                    onClick={() => toggleAllCheckMarks()}
+                />
             </div>
             <div className="ftCell iconCell"> &nbsp; </div>
             <div className="ftCell nameCell">
                 name &nbsp;
-                {sortingIcon(nameSort, setNameSort)}
+                {sortingIcon(nameSort, setNameSort, 'nameCell')}
             </div>
             <div className="ftCell expiryCell">
                 expiry &nbsp;
-                {sortingIcon(expirySort, setExpirySort)}
+                {sortingIcon(expirySort, setExpirySort, 'expiryCell')}
             </div>
             <div className="ftCell collapseButtonCell">
                 <FontAwesomeIcon

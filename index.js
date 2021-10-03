@@ -62,7 +62,7 @@ const addFood = (request, response) => {
     );
 };
 
-app.post('/addFood', addFood)
+app.post('/addFood', addFood);
 
 
 const deleteFoods = (request, response) => {
@@ -82,9 +82,27 @@ const deleteFoods = (request, response) => {
     );
 };
 
-app.post('/deleteFoods', deleteFoods)
+app.post('/deleteFoods', deleteFoods);
 
 
+const decrementFood = (request, response) => {
+    const payload = JSON.parse(Object.keys(request.body)[0]);
+    const { id, quantity } = payload;
+
+    const newQuantity = quantity - 1;
+    pool.query(
+        'UPDATE foods SET quantity = $1 WHERE id = $2',
+        [newQuantity, id],
+        (error) => {
+            if (error) {
+                console.log(error);
+                response.status(500).json({status: 'failure', message: 'Eugh!'});
+            }
+            response.status(200).json({ status: 'success', message: 'Quantity de-incremented.' })
+        }
+    );
+}
+app.post('/decrementFood', decrementFood);
 
 
 
