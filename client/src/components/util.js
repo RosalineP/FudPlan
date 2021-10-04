@@ -21,3 +21,23 @@ export const isValidDate = dateString => {
 
     return day > 0 && day <= monthLength[month - 1];
 };
+
+export const freshness = expiry => {
+    const currentDate = new Date();
+    const splitDate = currentDate.toISOString().split('T')[0].split('-');
+    const currDateStr = parseInt(splitDate[0] + splitDate[1] + splitDate[2]);
+
+    const splitExpiry = expiry.split('-');
+    const expDateStr = parseInt(splitExpiry[2] + splitExpiry[0] + splitExpiry[1]);
+
+    const dateDiff = expDateStr - currDateStr;
+    if (dateDiff <= -2) {
+        return 'fudRed';
+    }
+    // else if (dateDiff === -1) { return 'fudYellow'; } // todo: keep?
+    else if (dateDiff < 7) {
+        return 'fudOrange';
+    } else {
+        return 'fudGreen';
+    }
+};

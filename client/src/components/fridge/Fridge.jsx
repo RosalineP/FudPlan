@@ -5,22 +5,19 @@ import {
     faChevronCircleRight,
     faChevronCircleLeft,
     faSkullCrossbones,
-    faCaretDown,
     faAngleDown,
     faAngleUp,
 } from '@fortawesome/free-solid-svg-icons';
-import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
-import { decrementFood, deleteFoods, getFoods } from '../../actions';
+import { deleteFoods, getFoods } from '../../actions';
 
 import { FridgeButtonGroup } from './TopButtonGroup';
+import { FoodRow } from './FoodRow';
 
 const classNames = require('classnames');
 
-const images = require.context('../../assets/icons', true);
-
 const FoodActionsButtons = props => {
-    const { classNames, checkedFoods, isActive, loadFoods, resetCheckedFoods, setError } = props;
+    const { classNames, checkedFoods, isActive, loadFoods, resetCheckedFoods, setError, setBeingEditedFoods } = props;
 
     const deleteFoodAction = () => {
         if (isActive) {
@@ -40,77 +37,14 @@ const FoodActionsButtons = props => {
             <div className={classNames} onClick={() => deleteFoodAction()}>
                 eat
             </div>
-            {/* <div className={classNames} onClick={() => deleteFoodAction()}>*/}
-            {/*    expire*/}
-            {/* </div>*/}
-        </div>
-    );
-};
-
-const FoodRow = props => {
-    const {
-        isChecked,
-        iconCell,
-        nameCell,
-        expiryCell,
-        isCollapsed,
-        unitCell,
-        quantityCell,
-        onClickReportId,
-        loadFoods,
-        setError,
-        id,
-    } = props;
-    const [checked, setChecked] = useState(isChecked);
-
-    useEffect(() => {
-        setChecked(isChecked);
-    }, [isChecked]);
-
-    const tickBox = () => {
-        onClickReportId();
-        setChecked(!checked);
-    };
-
-    const deIncrementQuantity = () => {
-        decrementFood({ id, quantity: quantityCell })
-            .then(() => {
-                loadFoods();
-            })
-            .catch(() => setError(true));
-    };
-
-    return (
-        <div className="ftRow">
-            <div className="ftCell checkmarkCell" onClick={() => tickBox()}>
-                {checked ? (
-                    <FontAwesomeIcon className="icon clickable" icon={faCheckSquare} size="lg" />
-                ) : (
-                    <FontAwesomeIcon className="icon clickable" icon={faSquare} size="lg" />
-                )}
+            <div
+                className={classNames}
+                onClick={() => {
+                    setBeingEditedFoods(checkedFoods);
+                }}
+            >
+                edit
             </div>
-            <div className="ftCell iconCell">
-                <img className="foodIcon" src={images(iconCell).default} alt="food icon" />
-            </div>
-            <div className="ftCell nameCell">{nameCell}</div>
-            <div className="ftCell expiryCell">{expiryCell}</div>
-            <div className="ftCell collapseButtonCell"> </div>
-            <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>
-                {quantityCell}
-                {quantityCell !== null && quantityCell !== 0 && (
-                    <>
-                        &nbsp;
-                        <FontAwesomeIcon
-                            className="icon clickable"
-                            icon={faCaretDown}
-                            onClick={() => {
-                                deIncrementQuantity();
-                            }}
-                        />
-                    </>
-                )}
-            </div>
-            <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>{unitCell}</div>
         </div>
     );
 };
@@ -121,6 +55,8 @@ const FoodTable = props => {
     const [foodDisplay, setFoodDisplay] = useState(undefined);
 
     const [checkedFoods, setCheckedFoods] = useState(new Set());
+    const [beingEditedFoods, setBeingEditedFoods] = useState(new Set());
+    const [beingEditedData, setBeingEditedData] = useState(undefined);
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const [nameSort, setNameSort] = useState(undefined);
@@ -144,11 +80,23 @@ const FoodTable = props => {
                         quantityCell={food.quantity}
                         unitCell={food.unit}
                         isCollapsed={isCollapsed}
+                        beingEdited={beingEditedFoods.has(food.id)}
                     />
                 ));
             setFoodDisplay(foodRows);
         }
-    }, [infoRefreshed, foodData, checkedFoods]);
+    }, [infoRefreshed, foodData, checkedFoods, compartmentSelection, isCollapsed, beingEditedFoods]);
+
+    useEffect(() => {
+        setCheckedFoods(new Set());
+    }, [compartmentSelection]);
+
+    useEffect(() => {
+        if (beingEditedFoods.size > 0) {
+
+            // setBeingEditedData()
+        }
+    }, [beingEditedFoods]);
 
     const toggleCollapse = () => {
         setIsCollapsed(!isCollapsed);
@@ -306,6 +254,7 @@ const FoodTable = props => {
                 checkedFoods={checkedFoods}
                 loadFoods={loadFoods}
                 resetCheckedFoods={resetCheckedFoods}
+                setBeingEditedFoods={setBeingEditedFoods}
                 setError={setError}
             />
         </div>

@@ -4,6 +4,7 @@
 
 :root {
   --fudGreen: #A4DE02;
+  --fudYellow: #fff07a;
   --fudOrange: #FED833;
   --fudRed: #DE3614;
 }
@@ -210,7 +211,11 @@
 }
 
 .quantityCell {
-  /*width: 10px;*/
+  display: flex;
+}
+
+.quantityText {
+  width: 1.5em;
 }
 
 /*TODO*/
@@ -224,6 +229,45 @@
 .foodIcon {
   height: 2.5em;
   width:  2.5em;
+}
+
+/* ----- Fridge: Table editing row ----- */
+
+.iconSelect {
+    border-bottom: 2px solid var(--fudGreen);
+    box-sizing: border-box;
+    width: 78px;
+}
+.iconSelect:focus {
+  outline: none;
+}
+.iconSelect .iconSelect{
+  /*display: none;*/
+}
+
+.nameEdit {
+  border-left: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 2px solid var(--fudGreen);
+  box-sizing: border-box;
+  height: 40px;
+  width: 85%;
+}
+.nameEdit:focus {
+  outline: none;
+}
+
+.expiryEdit {
+  width: 95% !important;
+}
+
+.quantityEditCell {
+  width: 70% !important;
+}
+
+.ftRowEdit {
+  height: 43px;
 }
 
 /* ----- Fridge: Actions ----- */
@@ -372,6 +416,30 @@ body {
 
 .errorIcon {
   color: var(--fudRed);
+}
+
+.fudGreen {
+  background-color: #92c10f;
+}
+
+.fudYellow {
+  background-color: var(--fudYellow);
+}
+
+.fudOrange {
+  background-color: var(--fudOrange);
+}
+
+.fudRed {
+  background-color: var(--fudRed);
+}
+
+.thickText {
+  border-radius: 10px;
+  color: white;
+  padding: 4px 0 5px 0;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .noDisplay {

@@ -1,6 +1,6 @@
 import Select from 'react-select';
 
-import { OPTIONS_ICON, SELECT_STYLES, SELECT_THEME } from './constants';
+import { OPTIONS_ICON, OPTIONS_UNIT, SELECT_STYLES, SELECT_THEME } from './constants';
 
 export const TextField = props => {
     const { warning, nameField, onChange, className, placeholder } = props;
@@ -60,13 +60,6 @@ export const IconSelect = props => {
 export const QuantityAndUnitSelect = props => {
     const { setQuantity, quantity, quantityWarning, unit, setUnit } = props;
 
-    const optionsUnit = [
-        { value: 'oz', label: 'oz' },
-        { value: 'g', label: 'g' },
-        { value: 'cup', label: 'cup' },
-        { value: 'package', label: 'package' },
-    ];
-
     return (
         <div className="quantityAndUnitSelect">
             <TextField
@@ -81,7 +74,7 @@ export const QuantityAndUnitSelect = props => {
                 className="popOverField popOverUnitSelect"
                 value={unit}
                 onChange={unit => setUnit(unit)}
-                options={optionsUnit}
+                options={OPTIONS_UNIT}
                 styles={SELECT_STYLES}
                 placeholder="unit"
                 theme={SELECT_THEME}

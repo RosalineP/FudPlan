@@ -28,6 +28,13 @@ export const SELECT_THEME = theme => ({
     },
 });
 
+export const OPTIONS_UNIT = [
+    { value: 'oz', label: 'oz' },
+    { value: 'g', label: 'g' },
+    { value: 'cup', label: 'cup' },
+    { value: 'package', label: 'package' },
+];
+
 export const OPTIONS_ICON = [
     { value: './fruit/apple.svg', label: 'apples' },
     { value: './fruit/banana.svg', label: 'bananas' },
