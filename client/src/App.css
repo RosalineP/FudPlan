@@ -378,6 +378,49 @@
 }
 
 /* --------------------------------------- */
+/* Recipe */
+/* --------------------------------------- */
+.recipe {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipeHeaderArea {
+  height: 200px;
+}
+
+.recipeSection {
+  /*border: 1px black solid;*/
+
+  color: #C0C5CE;
+  font-weight: bold;
+  font-size: 20px;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 700px;
+  margin-bottom: 3%
+}
+
+.recipeSection__recipes {
+  /*border: 1px blue solid;*/
+  display: flex;
+  /*justify-content: space-evenly;*/
+
+
+  border-top: 3px #C0C5CE solid;
+  height: 200px;
+}
+
+.recipeSection__recipes__recipe {
+  border: 1px red solid;
+  height: 100%;
+  width: 20%;
+  margin-right: 2.5%;
+  margin-left: 2.5%;
+}
+
+
+/* --------------------------------------- */
 /* Util/Misc */
 /* --------------------------------------- */
 .noHighlight {

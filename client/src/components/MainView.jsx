@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Fridge } from './fridge/Fridge';
+import { Recipe } from './recipe/Recipe';
 
 export const MainView = props => {
     const view = props.viewType;
@@ -12,6 +13,6 @@ export const MainView = props => {
         return <div className="placeholder"> Füd's Shöp section is coming soon! </div>;
     }
     if (view === 'recipe') {
-        return <div className="placeholder"> Füd's Rëcipe section is coming soon! </div>;
+        return <Recipe />;
     }
 };

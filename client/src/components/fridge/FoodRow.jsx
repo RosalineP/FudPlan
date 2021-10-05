@@ -31,12 +31,12 @@ export const FoodRow = props => {
     } = props;
     const [checked, setChecked] = useState(isChecked);
     const [foodFields, setFoodFields] = useState({
-        id: id,
+        id,
         name: nameCell,
         icon: iconCell,
         expiry: expiryCell,
-        quantity: quantityCell !== null ? quantityCell : "",
-        unit: unitCell !== null ? unitCell : "",
+        quantity: quantityCell !== null ? quantityCell : '',
+        unit: unitCell !== null ? unitCell : '',
     });
 
     useEffect(() => {
