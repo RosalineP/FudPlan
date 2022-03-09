@@ -28,15 +28,11 @@ export const FoodRow = props => {
         setError,
         id,
         beingEdited,
+        food
     } = props;
     const [checked, setChecked] = useState(isChecked);
     const [foodFields, setFoodFields] = useState({
-        id,
-        name: nameCell,
-        icon: iconCell,
-        expiry: expiryCell,
-        quantity: quantityCell !== null ? quantityCell : '',
-        unit: unitCell !== null ? unitCell : '',
+        ...food
     });
 
     useEffect(() => {
@@ -58,21 +54,21 @@ export const FoodRow = props => {
 
     if (!beingEdited) {
         return (
-            <div className="ftRow">
-                <div className="ftCell checkmarkCell" onClick={() => tickBox()}>
+            <div className="ft__row">
+                <div className="checkmarkCell ft__cell" onClick={() => tickBox()}>
                     {checked ? (
                         <FontAwesomeIcon className="icon clickable" icon={faCheckSquare} size="lg" />
                     ) : (
                         <FontAwesomeIcon className="icon clickable" icon={faSquare} size="lg" />
                     )}
                 </div>
-                <div className="ftCell iconCell">
+                <div className="ft__cell iconCell">
                     <img className="foodIcon" src={images(iconCell).default} alt="food icon" />
                 </div>
-                <div className="ftCell nameCell">{nameCell}</div>
-                <div className={classNames('ftCell expiryCell thickText', freshness(expiryCell))}>{expiryCell}</div>
-                <div className="ftCell collapseButtonCell" />
-                <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>
+                <div className="nameCell ft__cell">{nameCell}</div>
+                <div className={classNames('ft__cell expiryCell')}>{expiryCell}</div>
+                <div className="ft__cell collapseButtonCell" />
+                <div className={classNames( 'quantityCell', 'ft__cell', { noDisplay: isCollapsed })}>
                     <div className="quantityText">{quantityCell}</div>
                     {quantityCell !== null && quantityCell !== 0 && (
                         <>
@@ -87,16 +83,16 @@ export const FoodRow = props => {
                         </>
                     )}
                 </div>
-                <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>{unitCell}</div>
+                <div className={classNames( 'unitCell', 'ft__cell', { noDisplay: isCollapsed })}>{unitCell}</div>
             </div>
         );
     } else {
         return (
             <div className="ftRow ftRowEdit">
-                <div className="ftCell checkmarkCell">
+                <div className=" checkmarkCell">
                     <FontAwesomeIcon className="icon" icon={faEdit} size="lg" />
                 </div>
-                <div className="ftCell iconCell">
+                <div className=" iconCell">
                     <Select
                         className="iconSelect"
                         value={foodFields.icon}
@@ -108,7 +104,7 @@ export const FoodRow = props => {
                         components={{ IndicatorSeparator: () => null }}
                     />
                 </div>
-                <div className="ftCell nameCell">
+                <div className=" nameCell">
                     <input
                         type="text"
                         value={foodFields.name}
@@ -119,7 +115,7 @@ export const FoodRow = props => {
                         placeholder="name"
                     />
                 </div>
-                <div className="ftCell expiryCell">
+                <div className=" expiryCell">
                     <input
                         type="text"
                         value={foodFields.expiry}
@@ -130,8 +126,8 @@ export const FoodRow = props => {
                         placeholder="expiry"
                     />
                 </div>
-                <div className="ftCell collapseButtonCell" />
-                <div className={classNames('ftCell', 'quantityCell', { noDisplay: isCollapsed })}>
+                <div className=" collapseButtonCell" />
+                <div className={classNames('', 'quantityCell', { noDisplay: isCollapsed })}>
                     <input
                         type="text"
                         value={foodFields.quantity}
@@ -142,7 +138,7 @@ export const FoodRow = props => {
                         placeholder="quantity"
                     />
                 </div>
-                <div className={classNames('ftCell', 'unitCell', { noDisplay: isCollapsed })}>
+                <div className={classNames('', 'unitCell', { noDisplay: isCollapsed })}>
                     <Select
                         className="iconSelect"
                         value={foodFields.unit}

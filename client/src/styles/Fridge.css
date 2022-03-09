@@ -1,0 +1,131 @@
+.fridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ----- Compartment Button Group ----- */
+
+/* Align seeming middle of button group to center.
+   More art than science, dealing with presence of + button on impression of alignment,
+   as well as the fact that the button group is not perfectly symmetrical. */
+.compartmentBtnGroup {
+    margin-top: 2.5em;
+    margin-left: 1.9em; /* Note this adjustment */
+}
+
+.compartmentBtnGroup__freezer {
+    border-radius: 10px 0 0 10px;
+    border-top: 2px solid var(--fudGreen);
+    border-left: 2px solid var(--fudGreen);
+    border-bottom: 2px solid var(--fudGreen);
+    border-right: 0;
+}
+.compartmentBtnGroup__fridge {
+    border: 2px solid var(--fudGreen);
+}
+.compartmentBtnGroup__pantry  {
+    border-radius: 0 10px 10px 0;
+    border-top: 2px solid var(--fudGreen);
+    border-left: 0;
+    border-bottom: 2px solid var(--fudGreen);
+    border-right: 2px solid var(--fudGreen);
+}
+
+.compartmentBtnGroup__greenButton {
+    background: white;
+    color: var(--fudGreen);
+    padding: 5px 10px;
+    font-size: 1.2em;
+}
+
+.compartmentBtnGroup__selectedButton {
+    background-color: var(--fudGreen);
+    color: white;
+}
+
+.compartmentBtnGroup__addIcon {
+    color: var(--fudGreen);
+    margin-left: 0.7em;
+}
+
+/* ----- Error Display ----- */
+
+.error__display {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: var(--fudRed);
+    margin-top: 5em;
+}
+
+.error__text {
+    margin-top: 20px;
+    font-weight: normal;
+}
+
+/* ----- Food Table ----- */
+.ft {
+    margin-top: 2.5em;
+}
+
+.ft__loadingText {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5em;
+    color: var(--fudGreen);
+    font-size: 30px;
+}
+
+.ft__header {
+    border-bottom: 5px dashed var(--fudOrange);
+    font-weight: bold;
+    padding-bottom: 0.5em;
+}
+
+/* todo: adjust these below after figuring out set of units, and by-row actions*/
+
+.ft__row {
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+    color: var(--fudDarkGreen);
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+.ft__cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+.checkmarkCell {
+    flex: 0.6 4;
+}
+
+.iconCell {
+    flex: 0.8 1;
+}
+
+.nameCell {
+    flex: 1.2 2;
+}
+
+.expiryCell {
+    flex: 1.5 2;
+}
+
+.collapseButtonCell {
+    flex: 0.5 4;
+}
+
+.quantityCell {
+    flex: 0.7 4;
+}
+
+.unitCell {
+    flex: 0.9 4;
+}

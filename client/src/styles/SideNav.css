@@ -1,0 +1,92 @@
+.navBar__selectedOption {
+    background-color: var(--fudLightLightGrey);
+}
+
+/* --------------------------------------- */
+/* Mobile */
+/* --------------------------------------- */
+@media (max-width: 600px) {
+    .navBar {
+        height: 6em;
+        width: 100vw;
+        bottom: 0;
+        position: fixed;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        border-top: medium dashed var(--fudGreen);
+    }
+
+    .navBar__umlaut {
+        display: none;
+    }
+
+    .navBar__option {
+        height: 6rem;
+        width: 6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 2;
+        color: var(--fudGreen);
+    }
+
+    .navBar__fridgeIcon {
+        width: 4.5em;
+    }
+
+    .navBar__info {
+        display: none;
+    }
+}
+
+/* --------------------------------------- */
+/* Desktop */
+/* --------------------------------------- */
+@media (min-width: 601px) {
+    .navBar {
+        width: 6em;
+        height: 100vh;
+        float: left;
+        flex-direction: column;
+        border-right: medium dashed var(--fudGreen);
+    }
+
+    .navBar__umlaut {
+        height: 6rem;
+        width: 6rem;
+        font-size: 3.5em;
+        color: var(--fudGreen);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: medium dashed var(--fudGreen);
+    }
+
+    .navBar__option {
+        height: 6rem;
+        width: 6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--fudGreen);
+    }
+
+    .navBar__fridgeIcon {
+        width: 5em;
+    }
+
+    .navBar__info {
+        height: 6rem;
+        width: 6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navBar__info__icon {
+        color: var(--fudGreen);
+        position: absolute;
+        bottom: 1em;
+    }
+}

@@ -4,76 +4,13 @@
 
 :root {
   --fudGreen: #A4DE02;
-  --fudYellow: #fff07a;
+  --fudYellow: #FFF07A;
   --fudOrange: #FED833;
   --fudRed: #DE3614;
-}
 
-/* --------------------------------------- */
-/* Left Panel */
-/* --------------------------------------- */
-
-.leftPanel {
-  width: 6em;
-  height:100vh;
-  float: left;
-}
-
-.leftPanel__navBar {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  float: left;
-  width: 6em;
-  height: 110vh;
-  border-right: medium dashed var(--fudGreen);
-}
-
-.leftPanel__umlaut {
-  padding-bottom: 10px;
-  padding-top: 5px;
-  font-size: 3.5em;
-  color: var(--fudGreen);
-  text-align: center;
-  border-bottom: medium dashed var(--fudGreen);
-}
-
-.leftPanel__navIcon {
-  height: 6em;
-  width: 6em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.leftPanel__icon {
-  color: var(--fudGreen);
-  padding: 0;
-}
-
-.leftPanel__navIcon:hover {
-  background-color: var(--fudGreen);
-  cursor:pointer;
-}
-.leftPanel__navIcon:hover .leftPanel__icon {
-  color: white;
-}
-
-.leftPanel__fridgeIcon {
-  width:  4.5em;
-  background-image: url('assets/fridge-green.svg');
-}
-
-.leftPane__logInOut {
-  border-radius: 10px;
-  margin: 0 5px 0 7px;
-  font-size: 1.1em !important;
-  position: absolute;
-  bottom: 1em;
-}
-.leftPane__logInOut:hover {
-  background-color: var(--fudGreen);
-  color: white;
+  --fudLightLightGrey: #F2F5F2;
+  --fudLightGrey: #C0C5CE;
+  --fudDarkGreen: #92C10F;
 }
 
 /* --------------------------------------- */
@@ -93,41 +30,6 @@
 /* --------------------------------------- */
 /* Fridge */
 /* --------------------------------------- */
-.fridge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.fridge__buttonGroup {
-  margin: 5vh auto 0 auto;
-  position:relative;
-}
-
-.fridge__btnGroupLeft { border-radius: 10px 0px 0px 10px; }
-.fridge__btnGroupMiddle { border-width:  2px 0px 2px 0px; }
-.fridge__btnGroupRight  { border-radius: 0px 10px 10px 0px; }
-
-.fridge__selectedButton {
-  background-color: var(--fudGreen) !important;
-  color: white !important;
-}
-
-.fridge__addIcon {
-  margin-top: 10px;
-  margin-left: 10px;
-  cursor:pointer;
-}
-
-.fridge__loadingText {
-  color: var(--fudGreen);
-  font-size: 30px;
-  position: fixed;
-  top: 50%;
-  left: 55%;
-  margin-top: -100px;
-  margin-left: -100px;
-}
 
 /* ----- Fridge: Table ----- */
 
@@ -153,19 +55,7 @@
 .horizontalSpacer {
   width: 75px;
 }
-.errorDisplay {
-  justify-content: center;
-  margin-top: 100px !important;
-  color: var(--fudRed) !important;
-  font-size: 20px;
-}
-.errorText {
-  margin-top: 20px;
-  justify-content: center;
-  color: var(--fudRed) !important;
-  font-size: 16px;
-  font-weight: lighter;
-}
+
 
 ::-webkit-scrollbar {
   background: transparent;
@@ -186,22 +76,7 @@
 /*  background: white;*/
 /*}*/
 
-.ftHeader {
-  margin-top: 6vh;
-  border-bottom: 5px dashed var(--fudOrange);
-  font-weight: bold;
-  padding-bottom: 0.5em;
-  color: #577504;
-}
 
-.ftRow {
-  display: flex;
-  align-items: center;
-  width: calc(80vw - 3em);
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  color: #92c10f;
-}
 
 .ftCell {
   box-sizing: border-box;
@@ -211,7 +86,7 @@
 }
 
 .quantityCell {
-  display: flex;
+  /*display: flex;*/
 }
 
 .quantityText {
@@ -295,8 +170,8 @@
 }
 
 .foodActionDisabled {
-  color: #C0C5CE;
-  border: 3px dotted #C0C5CE;
+  color: var(--fudLightGrey);
+  border: 3px dotted var(--fudLightGrey);
 }
 
 /* ----- Fridge: Add food popover ----- */
@@ -385,38 +260,134 @@
   flex-direction: column;
 }
 
-.recipeHeaderArea {
+.recipe__HeaderArea {
   height: 200px;
 }
 
-.recipeSection {
-  /*border: 1px black solid;*/
-
-  color: #C0C5CE;
-  font-weight: bold;
-  font-size: 20px;
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 700px;
-  margin-bottom: 3%
-}
-
-.recipeSection__recipes {
+.recipe__grid {
   /*border: 1px blue solid;*/
   display: flex;
-  /*justify-content: space-evenly;*/
-
-
-  border-top: 3px #C0C5CE solid;
-  height: 200px;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
-.recipeSection__recipes__recipe {
-  border: 1px red solid;
-  height: 100%;
-  width: 20%;
+.recipePreview {
+  border: 4px var(--fudOrange) solid;
+  border-radius: 10px;
+  height: 150px;
+  width: 242px;
   margin-right: 2.5%;
   margin-left: 2.5%;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.recipePreview__ingredientRatio {
+  color: white;
+  background-color: var(--fudGreen);
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 60px;
+  height: 20px;
+  float: right;
+  margin: 3px 3px 0 0;
+}
+
+.recipePreview__tagBar {
+  font-family: "Lucida Console", monospace;
+  padding-left: 2px;
+  padding-bottom: 2px;
+  border-top: 1px var(--fudLightGrey) solid;
+  color: var(--fudLightGrey);
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.recipeModal {
+  visibility: visible;
+  border: 3px solid var(--fudGreen);
+  border-radius: 10px;
+  position: absolute;
+  background-color: white;
+
+  margin-top: 5%;
+  margin-left: 20%;
+  width: calc(60% - 6em);
+  height: 80%;
+  z-index: 10;
+}
+
+.recipeModal__heading {
+  /*border: 1px red solid;*/
+  display: flex;
+}
+
+.recipeModal__image {
+  border: 3px var(--fudOrange) solid;
+
+  flex-grow: 1;
+  border-radius: 10px;
+  height: 200px;
+  width: 200px;
+  min-height: 200px;
+  min-width: 200px;
+  margin: 60px 0 0 60px;
+}
+.recipeModal__titleAndDetails {
+  /*border: 1px blue solid;*/
+
+  /*width: 300px;*/
+  flex-grow: 1;
+  margin-left: 50px;
+  margin-top: 60px;
+  margin-right: 30px;
+}
+
+.recipeModal__title {
+  border-bottom: 3px var(--fudLightGrey) dashed;
+  color: var(--fudLightGrey);
+  font-size: 60px;
+
+}
+
+.recipeModal__detailTable {
+  margin-top: 10px;
+}
+
+.recipeModal__detailRow {
+  /*border: 1px blue solid;*/
+
+  color: #808080;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.recipeModal__detailColumnLeft {
+  display: flex;
+  flex-direction: column;
+  /*flex: 1;*/
+  width: 100px;
+  min-width: 100px;
+}
+
+.recipeModal__detailColumnRight {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+
+.recipeModal__heading div:last-child {
+  margin-left: auto;
+}
+
+.recipeModal__closeModal {
+  margin: 10px 20px 0 0;
+  flex-shrink: 7;
 }
 
 
@@ -457,12 +428,8 @@ body {
   padding: 0;
 }
 
-.errorIcon {
-  color: var(--fudRed);
-}
-
 .fudGreen {
-  background-color: #92c10f;
+  background-color: var(--fudDarkGreen);
 }
 
 .fudYellow {
@@ -497,11 +464,6 @@ input, select, textarea{
   color: #808080;
   text-indent: 5px;
   font-size: 16px;
-}
-
-/* I developed an entire feature without realizing my window was at 90% zoom. I don't want to redo the css ;; */
-html {
-  zoom: 90%;
 }
 
 body {

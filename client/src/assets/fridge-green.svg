@@ -1,20 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="612px" height="792px" viewBox="0 0 612 792" enable-background="new 0 0 612 792" xml:space="preserve">
-<path fill="#A4DE02" d="M489.605,153.524c0-26.523-21.49-48.024-48-48.024H170.394c-26.51,0-48,21.501-48,48.024v158.938h367.212
-	L489.605,153.524z"/>
-<line fill="none" x1="489.605" y1="312.462" x2="122.394" y2="312.462"/>
-<line fill="none" x1="122.392" y1="356.462" x2="489.605" y2="356.462"/>
-<path fill="#A4DE02" d="M122.392,356.462V596.47c0,27.079,21.491,49.03,48,49.03h271.212c26.511,0,48.001-21.951,48.001-49.03
-	V356.462H122.392L122.392,356.462z"/>
-<path fill="#FFFFFF" d="M445.668,273.585c0,8.119-6.716,14.701-15,14.701l0,0c-8.284,0-15-6.582-15-14.701v-25.84
-	c0-8.12,6.716-14.701,15-14.701l0,0c8.284,0,15,6.582,15,14.701V273.585z"/>
-<path fill="#FFFFFF" d="M445.672,443.967c0,8.463-6.716,15.322-15,15.322l0,0c-8.284,0-15-6.859-15-15.322v-40.857
-	c0-8.462,6.716-15.322,15-15.322l0,0c8.284,0,15,6.86,15,15.322V443.967z"/>
-<path fill="#A4DE02" d="M430.667,647.5c0,8.837-7.164,16-16,16h-15.334c-8.836,0-16-7.163-16-16v-4c0-8.837,7.164-16,16-16h15.334
-	c8.836,0,16,7.163,16,16V647.5L430.667,647.5z"/>
-<path fill="#A4DE02" d="M230.827,647.5c0,8.837-7.164,16-16,16h-15.333c-8.836,0-16-7.163-16-16v-4c0-8.837,7.164-16,16-16h15.334
-	c8.836,0,16,7.163,16,16L230.827,647.5L230.827,647.5z"/>
+
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 612 792" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<metadata>
+<vectornator:setting key="IsTimeLapseWatermarkDisabled" value="false"/>
+<vectornator:setting key="UndoHistoryDisabled" value="true"/>
+<vectornator:setting key="VNDimensionsVisible" value="true"/>
+<vectornator:setting key="VNSnapToGuides" value="true"/>
+<vectornator:setting key="WDCMYKEnabledKey" value="false"/>
+<vectornator:setting key="WDDisplayWhiteBackground" value="false"/>
+<vectornator:setting key="WDDynamicGuides" value="false"/>
+<vectornator:setting key="WDGuidesVisible" value="true"/>
+<vectornator:setting key="WDIsolateActiveLayer" value="false"/>
+<vectornator:setting key="WDOutlineMode" value="false"/>
+<vectornator:setting key="WDRulersVisible" value="true"/>
+<vectornator:setting key="WDSnapToEdges" value="false"/>
+<vectornator:setting key="WDSnapToGrid" value="false"/>
+<vectornator:setting key="WDSnapToPoints" value="false"/>
+<vectornator:setting key="WDUnits" value="Pixels"/>
+</metadata>
+<defs/>
+<g id="Untitled" vectornator:layerName="Untitled">
+<path d="M170.406 105.5C143.896 105.5 122.406 127.008 122.406 153.531L122.406 312.469L489.594 312.469L489.594 153.531C489.594 127.008 468.104 105.5 441.594 105.5L170.406 105.5ZM430.656 233.031C438.94 233.031 445.656 239.631 445.656 247.75L445.656 273.594C445.656 281.713 438.94 288.281 430.656 288.281C422.372 288.281 415.656 281.713 415.656 273.594L415.656 247.75C415.656 239.63 422.372 233.031 430.656 233.031ZM122.406 356.469L122.406 596.469C122.406 623.548 143.897 645.5 170.406 645.5L441.594 645.5C468.105 645.5 489.594 623.548 489.594 596.469L489.594 356.469L122.406 356.469ZM430.688 387.781C438.972 387.781 445.687 394.663 445.688 403.125L445.688 443.969C445.687 452.432 438.971 459.281 430.688 459.281C422.403 459.281 415.688 452.432 415.688 443.969L415.688 403.125C415.688 394.663 422.404 387.781 430.688 387.781Z" fill="#a4de02" fill-rule="evenodd" opacity="1" stroke="none"/>
+<path d="M430.667 647.5C430.667 656.337 423.503 663.5 414.667 663.5L399.333 663.5C390.497 663.5 383.333 656.337 383.333 647.5L383.333 643.5C383.333 634.663 390.497 627.5 399.333 627.5L414.667 627.5C423.503 627.5 430.667 634.663 430.667 643.5L430.667 647.5L430.667 647.5Z" fill="#a4de02" fill-rule="evenodd" opacity="1" stroke="none"/>
+<path d="M230.827 647.5C230.827 656.337 223.663 663.5 214.827 663.5L199.494 663.5C190.658 663.5 183.494 656.337 183.494 647.5L183.494 643.5C183.494 634.663 190.658 627.5 199.494 627.5L214.828 627.5C223.664 627.5 230.828 634.663 230.828 643.5L230.827 647.5L230.827 647.5Z" fill="#a4de02" fill-rule="evenodd" opacity="1" stroke="none"/>
+</g>
 </svg>
