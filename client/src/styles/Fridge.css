@@ -97,7 +97,8 @@
 
 .ft__cell {
     display: flex;
-    flex-direction: column;
+    /* todo: does row or column look better?*/
+    flex-direction: row;
     justify-content: center;
     flex: 1;
 }

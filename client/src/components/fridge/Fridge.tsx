@@ -2,7 +2,7 @@ import React, {FC, memo, useState} from 'react';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FoodTable } from './FoodTable1';
+import { FoodTable } from './FoodTable';
 
 interface Props {
     selection: string;

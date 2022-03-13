@@ -1,10 +1,15 @@
-import {Food, FoodAndQuantity, FoodIds} from "./types";
+import { Food, FoodAndQuantity, FoodIds } from "./types";
 
 const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = isProduction ? 'https://example-node-api-rosalinep.herokuapp.com' : 'http://localhost:3002';
 
 export const getFoods = async (): Promise<Food[]> => {
     const response = await fetch(baseUrl + '/foods');
+    return await response.json();
+};
+
+export const getFood = async (id: string): Promise<Food[]> => {
+    const response = await fetch(baseUrl + '/food?id=' + parseInt(id));
     return await response.json();
 };
 
@@ -33,12 +38,25 @@ export const deleteFoods = async (payload: FoodIds): Promise<any> => {
 };
 
 export const decrementFood = async (payload: FoodAndQuantity): Promise<any> => {
-    return fetch(baseUrl + '/decrementFood', {
+    const response = await fetch(baseUrl + '/decrementFood', {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {
             Accept: 'application/json, text/plain, */*',
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-    }).then(res => res.json());
+    });
+    return await response.json();
+};
+
+export const incrementFood = async (payload: FoodAndQuantity): Promise<any> => {
+    const response = await fetch(baseUrl + '/incrementFood', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    });
+    return await response.json();
 };

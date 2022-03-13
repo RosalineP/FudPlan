@@ -15,24 +15,12 @@ import { OPTIONS_ICON, OPTIONS_UNIT, SELECT_STYLES, SELECT_THEME } from './const
 const images = require.context('../../assets/icons', true);
 
 export const FoodRow = props => {
-    const {
-        isChecked,
-        iconCell,
-        nameCell,
-        expiryCell,
-        isCollapsed,
-        unitCell,
-        quantityCell,
-        onClickReportId,
-        loadFoods,
-        setError,
-        id,
-        beingEdited,
-        food
-    } = props;
+    const { isChecked, isCollapsed, onClickReportId, loadFoods, setError, beingEdited, food } = props;
+    const { id, icon, name, expiry, quantity, unit } = food;
+
     const [checked, setChecked] = useState(isChecked);
     const [foodFields, setFoodFields] = useState({
-        ...food
+        ...food,
     });
 
     useEffect(() => {
@@ -45,7 +33,7 @@ export const FoodRow = props => {
     };
 
     const deIncrementQuantity = () => {
-        decrementFood({ id, quantity: quantityCell })
+        decrementFood({ id, quantity })
             .then(() => {
                 loadFoods();
             })
@@ -63,14 +51,14 @@ export const FoodRow = props => {
                     )}
                 </div>
                 <div className="ft__cell iconCell">
-                    <img className="foodIcon" src={images(iconCell).default} alt="food icon" />
+                    <img className="foodIcon" src={images(icon).default} alt="food icon" />
                 </div>
-                <div className="nameCell ft__cell">{nameCell}</div>
-                <div className={classNames('ft__cell expiryCell')}>{expiryCell}</div>
+                <div className="nameCell ft__cell">{name}</div>
+                <div className={classNames('ft__cell expiryCell')}>{expiry}</div>
                 <div className="ft__cell collapseButtonCell" />
-                <div className={classNames( 'quantityCell', 'ft__cell', { noDisplay: isCollapsed })}>
-                    <div className="quantityText">{quantityCell}</div>
-                    {quantityCell !== null && quantityCell !== 0 && (
+                <div className={classNames('quantityCell', 'ft__cell', { noDisplay: isCollapsed })}>
+                    <div className="quantityText">{quantity}</div>
+                    {quantity !== null && quantity !== 0 && (
                         <>
                             &nbsp;
                             <FontAwesomeIcon
@@ -83,7 +71,7 @@ export const FoodRow = props => {
                         </>
                     )}
                 </div>
-                <div className={classNames( 'unitCell', 'ft__cell', { noDisplay: isCollapsed })}>{unitCell}</div>
+                <div className={classNames('unitCell', 'ft__cell', { noDisplay: isCollapsed })}>{unit}</div>
             </div>
         );
     } else {
